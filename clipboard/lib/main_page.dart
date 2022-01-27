@@ -17,8 +17,24 @@ class home_page extends StatefulWidget {
 }
 
 class _home_pageState extends State<home_page> {
+  TextEditingController clip_key = TextEditingController();
+  TextEditingController clip_value = TextEditingController();
+  double _screenWidth = 0;
+  double _screenH = 0;
+
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _screenWidth = MediaQuery.of(context).size.width;
+    _screenH = MediaQuery.of(context).size.height;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: Colors.grey.shade100.withOpacity(0.2),
+      body: Row(
+        
+      ),
+    );
   }
 }

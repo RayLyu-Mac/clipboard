@@ -6,24 +6,24 @@ part of 'hive_base.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ClipboardAdapter extends TypeAdapter<Clipboard> {
+class ClipboardAdapter extends TypeAdapter<ClipBoards> {
   @override
   final int typeId = 0;
 
   @override
-  Clipboard read(BinaryReader reader) {
+  ClipBoards read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Clipboard(
+    return ClipBoards(
       fields[0] as String,
       fields[1] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Clipboard obj) {
+  void write(BinaryWriter writer, ClipBoards obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
