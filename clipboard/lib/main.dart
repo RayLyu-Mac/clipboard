@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:hive/hive.dart';
 import 'main_page.dart';
 import 'hive_base.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart' as pp;
 
 void main() async {
   final appDocumentDir = Directory.current;
-  Hive.init(appDocumentDir.path + "/data");
+  Hive.init(appDocumentDir.path);
   Hive.registerAdapter(ClipboardAdapter());
   runApp(const MyApp());
 }
