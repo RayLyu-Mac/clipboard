@@ -3,6 +3,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'hive_base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:open_file/open_file.dart';
 
 add_entries(String ckey, String cvalue) {
   final clip_hive = Hive.box("Clip_board");
@@ -43,9 +44,10 @@ class _Clip_searchState extends State<Clip_search> {
     return Column(
       children: [
         Container(
-          height: 100,
+          height: 65,
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
-            border: Border.all(width: 12, color: Colors.grey.shade200),
+            border: Border.all(width: 8, color: Colors.blueAccent.shade200),
             borderRadius: BorderRadius.circular(15),
             color: Colors.white,
           ),
@@ -59,26 +61,45 @@ class _Clip_searchState extends State<Clip_search> {
             ),
           ),
         ),
-        SizedBox(
-          height: _screenH / 70,
-        ),
-        Search_list.isNotEmpty
+        Search_list.isNotEmpty && widget.controller!.text.isNotEmpty
             ? SingleChildScrollView(
                 child: Column(
                 children: [
                   for (var index = 0; index < Search_list.length; index++)
                     Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                       decoration: BoxDecoration(
-                          color: Colors.green,
-                          border: Border.all(width: 10, color: Colors.green)),
+                          color: Colors.lightBlueAccent.shade100,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              width: 6,
+                              color: Colors.lightBlueAccent.shade400)),
                       child: ListTile(
                         onTap: () {
                           Search_list[index][1] != "Add Value"
-                              ? Clipboard.setData(
-                                  ClipboardData(text: Search_list[index][1]))
+                              ? setState(() {
+                                  Clipboard.setData(ClipboardData(
+                                      text: Search_list[index][1]));
+                                  OpenFile.open(
+                                      Search_list[index][1].toString());
+                                })
                               : dialog_mode([
+                                  Text(
+                                    "Create value for: " +
+                                        widget.controller!.text,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   TextField(
+                                    decoration: InputDecoration(
+                                        hintText: "Enter value"),
                                     controller: widget.add_value,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
                                   ),
                                   RaisedButton(
                                       child: Text("Add value"),
@@ -88,6 +109,7 @@ class _Clip_searchState extends State<Clip_search> {
                                               widget.add_value!.text);
                                           widget.controller!.clear();
                                           widget.add_value!.clear();
+                                          Navigator.pop(context);
                                         });
                                       }))
                                 ]);
@@ -98,9 +120,7 @@ class _Clip_searchState extends State<Clip_search> {
                     )
                 ],
               ))
-            : Container(
-                child: Text(Search_list.toString()),
-              )
+            : Container()
       ],
     );
   }
@@ -108,9 +128,6 @@ class _Clip_searchState extends State<Clip_search> {
   void search(String search_string) {
     if (search_string.isNotEmpty) {
       Search_list.clear();
-      setState(() {
-        Search_list.add(["Add ${search_string}", "Add Value"]);
-      });
 
       for (var i = 0; i < widget.searchS!.length; i++) {
         if (widget.searchS![i]
@@ -118,17 +135,19 @@ class _Clip_searchState extends State<Clip_search> {
             .toLowerCase()
             .contains(search_string.toLowerCase())) {
           setState(() {
-            print("A");
             Search_list.add([widget.searchS![i], widget.values![i]]);
           });
         }
       }
+      setState(() {
+        Search_list.add(["Add ${search_string}", "Add Value"]);
+      });
     }
   }
 
   dialog_mode(List<Widget> dia) {
     return showGeneralDialog(
-        barrierColor: Colors.black.withOpacity(0.5),
+        barrierColor: Colors.blue.shade300.withOpacity(0.8),
         transitionDuration: Duration(milliseconds: 300),
         barrierDismissible: true,
         barrierLabel: '',

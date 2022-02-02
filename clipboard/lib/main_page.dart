@@ -9,6 +9,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'box_info.dart';
+import 'package:open_file/open_file.dart';
 
 class home_page extends StatefulWidget {
   home_page({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class _home_pageState extends State<home_page> {
   double _screenH = 0;
   List clip_keys = [];
   List clip_Value = [];
+  bool isfold = false;
 
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -39,62 +41,65 @@ class _home_pageState extends State<home_page> {
       clip_keys.add(Hive.box("Clip_board").getAt(i).keys);
       clip_Value.add(Hive.box("Clip_board").getAt(i).values);
     }
-    print(clip_keys);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightBlueAccent.shade100,
       body: Container(
         height: _screenH,
         child: Row(
           children: [
             Container(
-              width: _screenWidth / 5,
-              height: _screenH / 3,
-              child: clip_info(),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.lightBlue.shade100,
+                  border:
+                      Border.all(width: 10, color: Colors.lightBlue.shade500)),
+              width: 330,
+              child: Column(
+                children: [
+                  Text("Search"),
+                  Clip_search(
+                      controller: clip__add_key,
+                      searchS: clip_keys,
+                      values: clip_Value,
+                      add_value: clip__add_value)
+                ],
+              ),
             ),
-            IconButton(
-                onPressed: (() {
-                  dialog_mode([
-                    Row(
-                      children: [
-                        Container(
-                            width: _screenWidth / 20,
-                            child: TextField(
-                              controller: clip__add_key,
-                            )),
-                        Container(
-                          width: _screenWidth / 20,
-                          child: TextField(
-                            controller: clip__add_value,
-                          ),
-                        )
-                      ],
-                    ),
-                    RaisedButton.icon(
-                        icon: Icon(Icons.add_alarm_rounded),
-                        label: Text("Add values"),
-                        onPressed: (() {
-                          setState(() {
-                            add_entries(
-                                clip__add_key.text, clip__add_value.text);
-                            clip__add_key.clear();
-                            clip__add_value.clear();
-                          });
-                        }))
-                  ]);
-                }),
-                icon: Icon(Icons.add)),
             Container(
-              width: _screenWidth / 8,
-              child: Clip_search(
-                  controller: clip__add_key,
-                  searchS: clip_keys,
-                  values: clip_Value,
-                  add_value: clip__add_value),
-            )
+              width: 40,
+              child: FlatButton(
+                  onPressed: (() {
+                    setState(() {
+                      isfold = !isfold;
+                    });
+                  }),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("History"),
+                      Icon(Icons.arrow_right_alt_outlined)
+                    ],
+                  )),
+            ),
+            isfold
+                ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.blue.shade100,
+                        border:
+                            Border.all(width: 10, color: Colors.blue.shade400)),
+                    width: 400,
+                    child: clip_info(),
+                  )
+                : Container(),
           ],
         ),
       ),
