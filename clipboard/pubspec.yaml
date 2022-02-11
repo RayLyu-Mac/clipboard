@@ -37,10 +37,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   hive: ^2.0.4
   path_provider: ^2.0.6
-  file_picker: ^4.1.6
   hive_flutter: ^1.1.0
   intl: ^0.17.0
   open_file: ^3.2.1
+  url_launcher: ^6.0.18
+  file_picker: ^4.3.3
+  flutter_phoenix: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -82,7 +84,25 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+    - family:          s1
+      fonts:
+      - asset:        ast/ft/s1.ttf
+    
+    - family:          s2
+      fonts:
+      - asset:        ast/ft/s2.ttf
+    
+    - family:          s3
+      fonts:
+      - asset:        ast/ft/s3.ttf
+    
+    - family:          s4
+      fonts:
+      - asset:        ast/ft/s4.ttf
+    - family:          b1
+      fonts:
+      - asset:        ast/ft/b1.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

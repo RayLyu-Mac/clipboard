@@ -6,10 +6,8 @@ import 'dart:io';
 import 'hive_base.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/services.dart';
 import 'box_info.dart';
-import 'package:open_file/open_file.dart';
+import 'package:file_picker/file_picker.dart';
 
 class home_page extends StatefulWidget {
   home_page({Key? key}) : super(key: key);
@@ -21,6 +19,7 @@ class home_page extends StatefulWidget {
 class _home_pageState extends State<home_page> {
   TextEditingController clip__add_key = TextEditingController();
   TextEditingController clip__add_value = TextEditingController();
+  TextEditingController clip_comment = TextEditingController();
   double _screenWidth = 0;
   double _screenH = 0;
   List clip_keys = [];
@@ -47,26 +46,39 @@ class _home_pageState extends State<home_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlueAccent.shade100,
+      backgroundColor: Colors.grey.shade50,
       body: Container(
         height: _screenH,
         child: Row(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.lightBlue.shade100,
-                  border:
-                      Border.all(width: 10, color: Colors.lightBlue.shade500)),
-              width: 330,
+                  color: Colors.grey.shade300,
+                  border: Border.all(width: 10, color: Colors.grey.shade300)),
+              width: _screenWidth / 2.2,
               child: Column(
                 children: [
-                  Text("Search"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Search",
+                        style: TextStyle(
+                          fontFamily: "s3",
+                          fontSize: _screenH / 10,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                    ],
+                  ),
                   Clip_search(
                       controller: clip__add_key,
                       searchS: clip_keys,
                       values: clip_Value,
+                      comment: clip_comment,
                       add_value: clip__add_value)
                 ],
               ),
@@ -79,24 +91,16 @@ class _home_pageState extends State<home_page> {
                       isfold = !isfold;
                     });
                   }),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("History"),
-                      Icon(Icons.arrow_right_alt_outlined)
-                    ],
-                  )),
+                  child: const Icon(Icons.arrow_right_alt_outlined)),
             ),
             isfold
                 ? Container(
                     margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blue.shade100,
-                        border:
-                            Border.all(width: 10, color: Colors.blue.shade400)),
-                    width: 400,
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.grey.shade300,
+                    ),
+                    width: _screenWidth / 2.2,
                     child: clip_info(),
                   )
                 : Container(),

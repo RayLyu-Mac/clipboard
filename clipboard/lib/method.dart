@@ -1,9 +1,13 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'hive_base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'textfield.dart';
+import 'inidvi.dart';
 
 add_entries(String ckey, String cvalue) {
   final clip_hive = Hive.box("Clip_board");
@@ -12,11 +16,13 @@ add_entries(String ckey, String cvalue) {
 
 class Clip_search extends StatefulWidget {
   final TextEditingController? controller;
+  final TextEditingController? comment;
   final List? searchS;
   final TextEditingController? add_value;
   final List? values;
   Clip_search(
       {@required this.controller,
+      @required this.comment,
       @required this.searchS,
       @required this.values,
       @required this.add_value,
@@ -31,6 +37,7 @@ class _Clip_searchState extends State<Clip_search> {
   List Search_list = [];
   double _screenWidth = 0;
   double _screenH = 0;
+  bool isTab = true;
 
   @override
   void didChangeDependencies() {
@@ -47,13 +54,15 @@ class _Clip_searchState extends State<Clip_search> {
           height: 65,
           margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
-            border: Border.all(width: 8, color: Colors.blueAccent.shade200),
             borderRadius: BorderRadius.circular(15),
             color: Colors.white,
           ),
           child: TextField(
             controller: widget.controller,
             onChanged: search,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+            ),
             style: TextStyle(
               fontSize: _screenH / 25,
               fontWeight: FontWeight.bold,
@@ -66,56 +75,135 @@ class _Clip_searchState extends State<Clip_search> {
                 child: Column(
                 children: [
                   for (var index = 0; index < Search_list.length; index++)
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                      decoration: BoxDecoration(
-                          color: Colors.lightBlueAccent.shade100,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                              width: 6,
-                              color: Colors.lightBlueAccent.shade400)),
+                    individual_box(
                       child: ListTile(
                         onTap: () {
-                          Search_list[index][1] != "Add Value"
+                          Search_list[index][1] != "Add Value+comment"
                               ? setState(() {
-                                  Clipboard.setData(ClipboardData(
-                                      text: Search_list[index][1]));
-                                  OpenFile.open(
-                                      Search_list[index][1].toString());
+                                  if (Search_list[index][1]
+                                          .toString()
+                                          .substring(1, 5) ==
+                                      "http") {
+                                    launch(Search_list[index][1]
+                                        .toString()
+                                        .split("+")[0]);
+                                  } else {
+                                    Clipboard.setData(ClipboardData(
+                                        text: Search_list[index][1]
+                                            .toString()
+                                            .split("+")[0]));
+                                    OpenFile.open(Search_list[index][1]
+                                        .toString()
+                                        .split("+")[0]);
+                                  }
                                 })
-                              : dialog_mode([
-                                  Text(
-                                    "Create value for: " +
-                                        widget.controller!.text,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextField(
-                                    decoration: InputDecoration(
-                                        hintText: "Enter value"),
-                                    controller: widget.add_value,
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  RaisedButton(
-                                      child: Text("Add value"),
-                                      onPressed: (() {
-                                        setState(() {
-                                          add_entries(widget.controller!.text,
-                                              widget.add_value!.text);
-                                          widget.controller!.clear();
-                                          widget.add_value!.clear();
-                                          Navigator.pop(context);
-                                        });
-                                      }))
-                                ]);
+                              : widget.controller!.text.isNotEmpty
+                                  ? dialog_mode([
+                                      Text(
+                                        "Create value for: " +
+                                            widget.controller!.text,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: _screenH / 18,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            fontFamily: "s4"),
+                                      ),
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+                                      TextFieldForm(
+                                          screenWidth: _screenWidth,
+                                          hint: " Enter value",
+                                          prefix: Icons.pending_actions,
+                                          value: widget.add_value),
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+                                      TextFieldForm(
+                                          screenWidth: _screenWidth,
+                                          prefix: Icons.comment_sharp,
+                                          hint: " Enter Comment",
+                                          value: widget.comment),
+                                      const SizedBox(
+                                        height: 40,
+                                      ),
+                                      Container(
+                                        width: _screenWidth / 6,
+                                        height: _screenH / 10,
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey.shade300,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.white,
+                                                  offset: const Offset(-5, -5),
+                                                  blurRadius: 18,
+                                                  spreadRadius: 1.5),
+                                              BoxShadow(
+                                                  color: Colors.grey.shade500,
+                                                  offset: const Offset(5, 5),
+                                                  blurRadius: 18,
+                                                  spreadRadius: 1.5),
+                                            ]),
+                                        child: ElevatedButton(
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.grey.shade400)),
+                                          child: Text(
+                                            "Add value",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontFamily: "s3",
+                                                fontSize: _screenH / 20),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              add_entries(
+                                                  widget.controller!.text,
+                                                  "${widget.add_value!.text}+${widget.comment!.text}");
+                                              widget.controller!.clear();
+                                              widget.add_value!.clear();
+                                              widget.comment!.clear();
+
+                                              Navigator.pop(context);
+                                              Phoenix.rebirth(context);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+                                    ])
+                                  : dialog_mode([
+                                      Text(
+                                          "Please enter a valid value for the key!")
+                                    ]);
                         },
-                        title: Text(Search_list[index][0]),
-                        subtitle: Text(Search_list[index][1]),
+                        title: Text(
+                          Search_list[index][0],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: "s1",
+                              fontSize: _screenH / 26,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey.shade600,
+                              decoration: TextDecoration.underline),
+                        ),
+                        subtitle: Text(
+                          "\n" +
+                              Search_list[index][1].toString().split("+")[1] +
+                              "\n",
+                          style: TextStyle(
+                            fontFamily: "s4",
+                            fontSize: _screenH / 34,
+                            color: Colors.grey.shade600,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     )
                 ],
@@ -140,14 +228,14 @@ class _Clip_searchState extends State<Clip_search> {
         }
       }
       setState(() {
-        Search_list.add(["Add ${search_string}", "Add Value"]);
+        Search_list.add(["Add ${search_string}", "Add Value+comment"]);
       });
     }
   }
 
   dialog_mode(List<Widget> dia) {
     return showGeneralDialog(
-        barrierColor: Colors.blue.shade300.withOpacity(0.8),
+        barrierColor: Colors.grey.shade50.withOpacity(0.5),
         transitionDuration: Duration(milliseconds: 300),
         barrierDismissible: true,
         barrierLabel: '',
@@ -161,6 +249,7 @@ class _Clip_searchState extends State<Clip_search> {
               child: Opacity(
                 opacity: a1.value,
                 child: SimpleDialog(
+                  backgroundColor: Colors.grey.shade300,
                   contentPadding: EdgeInsets.fromLTRB(40, 30, 40, 30),
                   children: dia,
                 ),
