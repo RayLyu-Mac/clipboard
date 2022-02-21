@@ -41,8 +41,12 @@ class _TextFieldFormState extends State<TextFieldForm> {
           ]),
       width: widget.screenWidth! / 2,
       child: TextField(
+        autofocus: true,
         style: TextStyle(
-            fontSize: 33, color: Colors.grey.shade500, fontFamily: "b1"),
+            fontSize: 35,
+            color: Colors.grey.shade800,
+            fontFamily: "b1",
+            fontWeight: FontWeight.bold),
         decoration: InputDecoration(
             border: InputBorder.none,
             prefixIcon: Icon(widget.prefix),

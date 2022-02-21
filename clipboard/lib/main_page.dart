@@ -24,6 +24,9 @@ class _home_pageState extends State<home_page> {
   double _screenH = 0;
   List clip_keys = [];
   List clip_Value = [];
+  List clip_comments = [];
+  List clip_times = [];
+
   bool isfold = false;
 
   void didChangeDependencies() {
@@ -39,6 +42,8 @@ class _home_pageState extends State<home_page> {
     for (var i = 0; i < Hive.box("Clip_board").length; i++) {
       clip_keys.add(Hive.box("Clip_board").getAt(i).keys);
       clip_Value.add(Hive.box("Clip_board").getAt(i).values);
+      clip_comments.add(Hive.box("Clip_board").getAt(i).comment);
+      clip_times.add(Hive.box("Clip_board").getAt(i).times);
     }
     super.initState();
   }
@@ -50,14 +55,18 @@ class _home_pageState extends State<home_page> {
       body: Container(
         height: _screenH,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            AnimatedContainer(
+              curve: Curves.easeInCirc,
+              duration: Duration(milliseconds: 300),
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.grey.shade300,
                   border: Border.all(width: 10, color: Colors.grey.shade300)),
-              width: _screenWidth / 2.2,
+              width: isfold ? _screenWidth / 2.15 : _screenWidth / 1.15,
               child: Column(
                 children: [
                   Row(
@@ -79,6 +88,8 @@ class _home_pageState extends State<home_page> {
                       searchS: clip_keys,
                       values: clip_Value,
                       comment: clip_comment,
+                      clipcomment: clip_comments,
+                      cliptime: clip_times,
                       add_value: clip__add_value)
                 ],
               ),
@@ -93,17 +104,16 @@ class _home_pageState extends State<home_page> {
                   }),
                   child: const Icon(Icons.arrow_right_alt_outlined)),
             ),
-            isfold
-                ? Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.grey.shade300,
-                    ),
-                    width: _screenWidth / 2.2,
-                    child: clip_info(),
-                  )
-                : Container(),
+            AnimatedContainer(
+              duration: Duration(milliseconds: 600),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey.shade300,
+              ),
+              width: isfold ? _screenWidth / 2.25 : 0,
+              child: clip_info(),
+            ),
           ],
         ),
       ),

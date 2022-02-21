@@ -43,7 +43,6 @@ dependencies:
   url_launcher: ^6.0.18
   file_picker: ^4.3.3
   flutter_phoenix: ^1.0.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

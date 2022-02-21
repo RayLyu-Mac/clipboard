@@ -10,5 +10,11 @@ class ClipBoards {
   @HiveField(1)
   final String values;
 
-  ClipBoards(this.keys, this.values);
+  @HiveField(2)
+  final String times;
+
+  @HiveField(3)
+  final String comment;
+
+  ClipBoards(this.keys, this.values, this.times, this.comment);
 }

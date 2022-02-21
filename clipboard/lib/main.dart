@@ -9,7 +9,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 void main() async {
   final appDocumentDir = Directory.current;
   Hive.init(appDocumentDir.path);
-  Hive.registerAdapter(ClipboardAdapter());
+  Hive.registerAdapter(ClipBoardsAdapter());
 
   runApp(Phoenix(child: MyApp()));
 }

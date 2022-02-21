@@ -6,7 +6,7 @@ part of 'hive_base.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ClipboardAdapter extends TypeAdapter<ClipBoards> {
+class ClipBoardsAdapter extends TypeAdapter<ClipBoards> {
   @override
   final int typeId = 0;
 
@@ -19,17 +19,23 @@ class ClipboardAdapter extends TypeAdapter<ClipBoards> {
     return ClipBoards(
       fields[0] as String,
       fields[1] as String,
+      fields[2] as String,
+      fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, ClipBoards obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.keys)
       ..writeByte(1)
-      ..write(obj.values);
+      ..write(obj.values)
+      ..writeByte(2)
+      ..write(obj.times)
+      ..writeByte(3)
+      ..write(obj.comment);
   }
 
   @override
@@ -38,7 +44,7 @@ class ClipboardAdapter extends TypeAdapter<ClipBoards> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ClipboardAdapter &&
+      other is ClipBoardsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

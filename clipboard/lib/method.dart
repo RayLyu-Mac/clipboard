@@ -8,10 +8,11 @@ import 'package:open_file/open_file.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'textfield.dart';
 import 'inidvi.dart';
+import 'package:intl/intl.dart';
 
-add_entries(String ckey, String cvalue) {
+add_entries(String ckey, String cvalue, String storedtime, String Clipcomment) {
   final clip_hive = Hive.box("Clip_board");
-  clip_hive.add(ClipBoards(ckey, cvalue));
+  clip_hive.add(ClipBoards(ckey, cvalue, storedtime, Clipcomment));
 }
 
 class Clip_search extends StatefulWidget {
@@ -20,11 +21,15 @@ class Clip_search extends StatefulWidget {
   final List? searchS;
   final TextEditingController? add_value;
   final List? values;
+  final List? clipcomment;
+  final List? cliptime;
   Clip_search(
       {@required this.controller,
       @required this.comment,
       @required this.searchS,
       @required this.values,
+      @required this.cliptime,
+      @required this.clipcomment,
       @required this.add_value,
       Key? key})
       : super(key: key);
@@ -38,6 +43,9 @@ class _Clip_searchState extends State<Clip_search> {
   double _screenWidth = 0;
   double _screenH = 0;
   bool isTab = true;
+  bool isChecked = false;
+  int isTT = 1;
+  String cutime = DateFormat('MM/dd/yyyy').format(DateTime.now());
 
   @override
   void didChangeDependencies() {
@@ -58,6 +66,7 @@ class _Clip_searchState extends State<Clip_search> {
             color: Colors.white,
           ),
           child: TextField(
+            autofocus: true,
             controller: widget.controller,
             onChanged: search,
             decoration: InputDecoration(
@@ -78,23 +87,21 @@ class _Clip_searchState extends State<Clip_search> {
                     individual_box(
                       child: ListTile(
                         onTap: () {
-                          Search_list[index][1] != "Add Value+comment"
+                          Search_list[index][2] != "Comment"
                               ? setState(() {
                                   if (Search_list[index][1]
-                                          .toString()
-                                          .substring(1, 5) ==
-                                      "http") {
-                                    launch(Search_list[index][1]
-                                        .toString()
-                                        .split("+")[0]);
+                                      .toString()
+                                      .contains("http")) {
+                                    launch(Search_list[index][1].toString());
+                                    Clipboard.setData(ClipboardData(
+                                        text:
+                                            Search_list[index][1].toString()));
                                   } else {
                                     Clipboard.setData(ClipboardData(
-                                        text: Search_list[index][1]
-                                            .toString()
-                                            .split("+")[0]));
-                                    OpenFile.open(Search_list[index][1]
-                                        .toString()
-                                        .split("+")[0]);
+                                        text:
+                                            Search_list[index][1].toString()));
+                                    OpenFile.open(
+                                        Search_list[index][1].toString());
                                   }
                                 })
                               : widget.controller!.text.isNotEmpty
@@ -128,6 +135,10 @@ class _Clip_searchState extends State<Clip_search> {
                                       const SizedBox(
                                         height: 40,
                                       ),
+                                      checkBmode(),
+                                      const SizedBox(
+                                        height: 40,
+                                      ),
                                       Container(
                                         width: _screenWidth / 6,
                                         height: _screenH / 10,
@@ -136,7 +147,7 @@ class _Clip_searchState extends State<Clip_search> {
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                             boxShadow: [
-                                              BoxShadow(
+                                              const BoxShadow(
                                                   color: Colors.white,
                                                   offset: const Offset(-5, -5),
                                                   blurRadius: 18,
@@ -162,8 +173,13 @@ class _Clip_searchState extends State<Clip_search> {
                                           onPressed: () {
                                             setState(() {
                                               add_entries(
-                                                  widget.controller!.text,
-                                                  "${widget.add_value!.text}+${widget.comment!.text}");
+                                                widget.controller!.text,
+                                                widget.add_value!.text,
+                                                "Created on:" +
+                                                    cutime +
+                                                    "++${isChecked ? 30 : 999}",
+                                                widget.comment!.text,
+                                              );
                                               widget.controller!.clear();
                                               widget.add_value!.clear();
                                               widget.comment!.clear();
@@ -179,7 +195,7 @@ class _Clip_searchState extends State<Clip_search> {
                                       ),
                                     ])
                                   : dialog_mode([
-                                      Text(
+                                      const Text(
                                           "Please enter a valid value for the key!")
                                     ]);
                         },
@@ -194,9 +210,7 @@ class _Clip_searchState extends State<Clip_search> {
                               decoration: TextDecoration.underline),
                         ),
                         subtitle: Text(
-                          "\n" +
-                              Search_list[index][1].toString().split("+")[1] +
-                              "\n",
+                          "\n" + Search_list[index][2].toString() + "\n",
                           style: TextStyle(
                             fontFamily: "s4",
                             fontSize: _screenH / 34,
@@ -223,12 +237,17 @@ class _Clip_searchState extends State<Clip_search> {
             .toLowerCase()
             .contains(search_string.toLowerCase())) {
           setState(() {
-            Search_list.add([widget.searchS![i], widget.values![i]]);
+            Search_list.add([
+              widget.searchS![i],
+              widget.values![i],
+              widget.clipcomment![i],
+              widget.cliptime![i]
+            ]);
           });
         }
       }
       setState(() {
-        Search_list.add(["Add ${search_string}", "Add Value+comment"]);
+        Search_list.add(["Add ${search_string}", "Add Value", "Comment", ""]);
       });
     }
   }
@@ -247,13 +266,43 @@ class _Clip_searchState extends State<Clip_search> {
           return Transform.scale(
               scale: a1.value,
               child: Opacity(
-                opacity: a1.value,
-                child: SimpleDialog(
-                  backgroundColor: Colors.grey.shade300,
-                  contentPadding: EdgeInsets.fromLTRB(40, 30, 40, 30),
-                  children: dia,
-                ),
-              ));
+                  opacity: a1.value,
+                  child:
+                      StatefulBuilder(builder: (context, StateSetter setState) {
+                    return SimpleDialog(
+                      backgroundColor: Colors.grey.shade300,
+                      contentPadding: EdgeInsets.fromLTRB(40, 30, 40, 30),
+                      children: dia,
+                    );
+                  })));
         });
+  }
+
+  checkBmode() {
+    return StatefulBuilder(
+      builder: (BuildContext context, setState) {
+        return CheckboxListTile(
+            subtitle: Text(
+                "For short time storage, the entry will automatically delete after 30 days"),
+            activeColor: Colors.green,
+            checkColor: Colors.lightGreen,
+            title: Text(
+              isChecked ? "Long Time Storage" : "Short Time Storage(30 days)",
+              style: TextStyle(
+                  fontFamily: "s4",
+                  color: isChecked
+                      ? Colors.lime.shade800
+                      : Colors.redAccent.shade700,
+                  fontWeight: FontWeight.bold,
+                  fontSize: _screenH / 28),
+            ),
+            value: isChecked,
+            onChanged: (n) {
+              setState(() {
+                isChecked = !isChecked;
+              });
+            });
+      },
+    );
   }
 }
