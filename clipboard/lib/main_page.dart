@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:async' show Future;
+
 import 'method.dart';
-import 'dart:io';
-import 'hive_base.dart';
+
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'box_info.dart';
-import 'package:file_picker/file_picker.dart';
 
 class home_page extends StatefulWidget {
   home_page({Key? key}) : super(key: key);
