@@ -25,7 +25,7 @@ class _home_pageState extends State<home_page> {
   List clip_times = [];
 
   bool isfold = false;
-
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _screenWidth = MediaQuery.of(context).size.width;
@@ -133,7 +133,7 @@ class _home_pageState extends State<home_page> {
               child: Opacity(
                 opacity: a1.value,
                 child: SimpleDialog(
-                  contentPadding: EdgeInsets.fromLTRB(40, 30, 40, 30),
+                  contentPadding: const EdgeInsets.fromLTRB(40, 30, 40, 30),
                   children: dia,
                 ),
               ));
