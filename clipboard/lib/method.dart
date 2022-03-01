@@ -80,148 +80,153 @@ class _Clip_searchState extends State<Clip_search> {
           ),
         ),
         Search_list.isNotEmpty && widget.controller!.text.isNotEmpty
-            ? SingleChildScrollView(
-                child: Column(
-                children: [
-                  for (var index = 0; index < Search_list.length; index++)
-                    individual_box(
-                      child: ListTile(
-                        onTap: () {
-                          Search_list[index][2] != "Comment"
-                              ? setState(() {
-                                  if (Search_list[index][1]
-                                      .toString()
-                                      .contains("http")) {
-                                    launch(Search_list[index][1].toString());
-                                    Clipboard.setData(ClipboardData(
-                                        text:
-                                            Search_list[index][1].toString()));
-                                  } else {
-                                    Clipboard.setData(ClipboardData(
-                                        text:
-                                            Search_list[index][1].toString()));
-                                    OpenFile.open(
-                                        Search_list[index][1].toString());
-                                  }
-                                })
-                              : widget.controller!.text.isNotEmpty
-                                  ? dialog_mode([
-                                      Text(
-                                        "Create value for: " +
-                                            widget.controller!.text,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: _screenH / 18,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            fontFamily: "s4"),
-                                      ),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      TextFieldForm(
-                                          screenWidth: _screenWidth,
-                                          hint: " Enter value",
-                                          prefix: Icons.pending_actions,
-                                          value: widget.add_value),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      TextFieldForm(
-                                          screenWidth: _screenWidth,
-                                          prefix: Icons.comment_sharp,
-                                          hint: " Enter Comment",
-                                          value: widget.comment),
-                                      const SizedBox(
-                                        height: 40,
-                                      ),
-                                      checkBmode(),
-                                      const SizedBox(
-                                        height: 40,
-                                      ),
-                                      Container(
-                                        width: _screenWidth / 6,
-                                        height: _screenH / 10,
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey.shade300,
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            boxShadow: [
-                                              const BoxShadow(
-                                                  color: Colors.white,
-                                                  offset: const Offset(-5, -5),
-                                                  blurRadius: 18,
-                                                  spreadRadius: 1.5),
-                                              BoxShadow(
-                                                  color: Colors.grey.shade500,
-                                                  offset: const Offset(5, 5),
-                                                  blurRadius: 18,
-                                                  spreadRadius: 1.5),
-                                            ]),
-                                        child: ElevatedButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.grey.shade400)),
-                                          child: Text(
-                                            "Add value",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontFamily: "s3",
-                                                fontSize: _screenH / 20),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              add_entries(
-                                                widget.controller!.text,
-                                                widget.add_value!.text,
-                                                "Created on:" +
-                                                    cutime +
-                                                    "++${isChecked ? 30 : 999}",
-                                                widget.comment!.text,
-                                              );
-                                              widget.controller!.clear();
-                                              widget.add_value!.clear();
-                                              widget.comment!.clear();
-
-                                              Navigator.pop(context);
-                                              Phoenix.rebirth(context);
-                                            });
-                                          },
+            ? Container(
+                margin: EdgeInsets.symmetric(horizontal: 3),
+                height: _screenH / 1.43,
+                child: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    for (var index = 0; index < Search_list.length; index++)
+                      individual_box(
+                        child: ListTile(
+                          onTap: () {
+                            Search_list[index][2] != "Comment"
+                                ? setState(() {
+                                    if (Search_list[index][1]
+                                        .toString()
+                                        .contains("http")) {
+                                      launch(Search_list[index][1].toString());
+                                      Clipboard.setData(ClipboardData(
+                                          text: Search_list[index][1]
+                                              .toString()));
+                                    } else {
+                                      Clipboard.setData(ClipboardData(
+                                          text: Search_list[index][1]
+                                              .toString()));
+                                      OpenFile.open(
+                                          Search_list[index][1].toString());
+                                    }
+                                  })
+                                : widget.controller!.text.isNotEmpty
+                                    ? dialog_mode([
+                                        Text(
+                                          "Create value for: " +
+                                              widget.controller!.text,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: _screenH / 18,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              fontFamily: "s4"),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                    ])
-                                  : dialog_mode([
-                                      const Text(
-                                          "Please enter a valid value for the key!")
-                                    ]);
-                        },
-                        title: Text(
-                          Search_list[index][0],
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontFamily: "s1",
-                              fontSize: _screenH / 26,
-                              fontWeight: FontWeight.bold,
+                                        const SizedBox(
+                                          height: 30,
+                                        ),
+                                        TextFieldForm(
+                                            screenWidth: _screenWidth,
+                                            hint: " Enter value",
+                                            prefix: Icons.pending_actions,
+                                            value: widget.add_value),
+                                        const SizedBox(
+                                          height: 30,
+                                        ),
+                                        TextFieldForm(
+                                            screenWidth: _screenWidth,
+                                            prefix: Icons.comment_sharp,
+                                            hint: " Enter Comment",
+                                            value: widget.comment),
+                                        const SizedBox(
+                                          height: 40,
+                                        ),
+                                        checkBmode(),
+                                        const SizedBox(
+                                          height: 40,
+                                        ),
+                                        Container(
+                                          width: _screenWidth / 6,
+                                          height: _screenH / 10,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey.shade300,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              boxShadow: [
+                                                const BoxShadow(
+                                                    color: Colors.white,
+                                                    offset:
+                                                        const Offset(-5, -5),
+                                                    blurRadius: 18,
+                                                    spreadRadius: 1.5),
+                                                BoxShadow(
+                                                    color: Colors.grey.shade500,
+                                                    offset: const Offset(5, 5),
+                                                    blurRadius: 18,
+                                                    spreadRadius: 1.5),
+                                              ]),
+                                          child: ElevatedButton(
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.grey.shade400)),
+                                            child: Text(
+                                              "Add value",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontFamily: "s3",
+                                                  fontSize: _screenH / 20),
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                add_entries(
+                                                  widget.controller!.text,
+                                                  widget.add_value!.text,
+                                                  "Created on:" +
+                                                      cutime +
+                                                      "++${isChecked ? 999 : 30}",
+                                                  widget.comment!.text,
+                                                );
+                                                widget.controller!.clear();
+                                                widget.add_value!.clear();
+                                                widget.comment!.clear();
+
+                                                Navigator.pop(context);
+                                                Phoenix.rebirth(context);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 30,
+                                        ),
+                                      ])
+                                    : dialog_mode([
+                                        const Text(
+                                            "Please enter a valid value for the key!")
+                                      ]);
+                          },
+                          title: Text(
+                            Search_list[index][0],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontFamily: "s1",
+                                fontSize: _screenH / 26,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade600,
+                                decoration: TextDecoration.underline),
+                          ),
+                          subtitle: Text(
+                            "\n" + Search_list[index][2].toString() + "\n",
+                            style: TextStyle(
+                              fontFamily: "s4",
+                              fontSize: _screenH / 34,
                               color: Colors.grey.shade600,
-                              decoration: TextDecoration.underline),
-                        ),
-                        subtitle: Text(
-                          "\n" + Search_list[index][2].toString() + "\n",
-                          style: TextStyle(
-                            fontFamily: "s4",
-                            fontSize: _screenH / 34,
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                ],
-              ))
+                      )
+                  ],
+                )),
+              )
             : Container()
       ],
     );

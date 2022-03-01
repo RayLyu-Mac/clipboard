@@ -57,8 +57,8 @@ class _home_pageState extends State<home_page> {
           children: [
             AnimatedContainer(
               curve: Curves.easeInCirc,
-              duration: Duration(milliseconds: 300),
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              duration: const Duration(milliseconds: 200),
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.grey.shade300,
@@ -108,7 +108,7 @@ class _home_pageState extends State<home_page> {
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.grey.shade300,
               ),
-              width: isfold ? _screenWidth / 2.25 : 0,
+              width: isfold ? _screenWidth / 2.15 : 0,
               child: clip_info(),
             ),
           ],
@@ -120,7 +120,7 @@ class _home_pageState extends State<home_page> {
   dialog_mode(List<Widget> dia) {
     return showGeneralDialog(
         barrierColor: Colors.black.withOpacity(0.5),
-        transitionDuration: Duration(milliseconds: 300),
+        transitionDuration: const Duration(milliseconds: 200),
         barrierDismissible: true,
         barrierLabel: '',
         context: context,

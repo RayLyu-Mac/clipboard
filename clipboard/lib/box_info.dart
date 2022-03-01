@@ -54,60 +54,291 @@ class _clip_infoState extends State<clip_info> {
                         .parse(clip.times.split("++")[0].split(":")[1]),
                     tod);
 
-                if (clip.times.split("++")[1] == "30") {
-                  if (daydiff > 30) {
-                    clips.deleteAt(index);
-                  }
-                }
+                if (clip.times.split("++")[1] == "30" && daydiff > 31) {
+                  clips.deleteAt(index);
+                  return Container();
+                } else {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                    decoration: BoxDecoration(
+                      color: clip.times.split("++")[1] == "30"
+                          ? Colors.grey.shade200
+                          : Colors.blueGrey.shade100,
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.blueGrey.shade50,
+                            offset: const Offset(-4, -4),
+                            blurRadius: 15,
+                            spreadRadius: 1),
+                        BoxShadow(
+                            color: Colors.grey.shade500,
+                            offset: const Offset(4, 4),
+                            blurRadius: 15,
+                            spreadRadius: 1),
+                      ],
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        "Key:" + clip.keys.toString(),
+                        style: TextStyle(
+                          fontFamily: "b1",
+                          fontSize: 22,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        " \n" +
+                            clip.comment.toString() +
+                            " \n" +
+                            clip.times.toString().split("++")[0],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: "b1",
+                          color: Colors.grey.shade600,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      trailing: Container(
+                        width: _screenWidth / 14,
+                        child: Row(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  showGeneralDialog(
+                                      barrierColor:
+                                          Colors.black.withOpacity(0.5),
+                                      transitionDuration:
+                                          Duration(milliseconds: 300),
+                                      barrierDismissible: true,
+                                      barrierLabel: '',
+                                      context: context,
+                                      pageBuilder: (context, animation,
+                                          secondaryAnimation) {
+                                        return Container();
+                                      },
+                                      transitionBuilder:
+                                          (context, a1, a2, widget) {
+                                        return Transform.scale(
+                                            scale: a1.value,
+                                            child: Opacity(
+                                                opacity: a1.value,
+                                                child: SimpleDialog(
+                                                  backgroundColor:
+                                                      Colors.grey.shade300,
+                                                  contentPadding:
+                                                      EdgeInsets.fromLTRB(
+                                                          43, 33, 43, 33),
+                                                  title: Row(
+                                                    children: [
+                                                      const Text(
+                                                        "Change ",
+                                                        style: TextStyle(
+                                                            fontFamily: "s3",
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 42),
+                                                      ),
 
-                return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: clip.times.split("++")[1] == "30"
-                        ? Colors.grey.shade200
-                        : Colors.blueGrey.shade100,
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.blueGrey.shade50,
-                          offset: const Offset(-4, -4),
-                          blurRadius: 15,
-                          spreadRadius: 1),
-                      BoxShadow(
-                          color: Colors.grey.shade500,
-                          offset: const Offset(4, 4),
-                          blurRadius: 15,
-                          spreadRadius: 1),
-                    ],
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      "Key:" + clip.keys.toString(),
-                      style: TextStyle(
-                        fontFamily: "b1",
-                        fontSize: 22,
-                        color: Colors.grey.shade600,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      " \n" +
-                          clip.comment.toString() +
-                          " \n" +
-                          clip.times.toString().split("++")[0],
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: "b1",
-                        color: Colors.grey.shade600,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    trailing: Container(
-                      width: _screenWidth / 14,
-                      child: Row(
-                        children: [
-                          IconButton(
+                                                      const SizedBox(
+                                                        width: 2,
+                                                      ),
+                                                      changeComment()
+                                                      // FlatButton(
+                                                      //     color: changeC
+                                                      //         ? Colors.lightGreen
+                                                      //         : Colors
+                                                      //             .grey.shade300,
+                                                      //     onPressed: () {
+                                                      //       setState(() {
+                                                      //         changeV = false;
+                                                      //         changeC = true;
+                                                      //       });
+                                                      //     },
+                                                      //     child: const Text(
+                                                      //       "Comment ",
+                                                      //       style: TextStyle(
+                                                      //           fontFamily: "s3",
+                                                      //           fontWeight:
+                                                      //               FontWeight
+                                                      //                   .bold,
+                                                      //           fontSize: 42),
+                                                      //     ))
+                                                    ],
+                                                  ),
+                                                  children: [
+                                                    //oldValue(clip),
+
+                                                    TextFieldForm(
+                                                        screenWidth:
+                                                            _screenWidth,
+                                                        value: changedvalue,
+                                                        hint:
+                                                            "New Value/Comment",
+                                                        prefix: Icons
+                                                            .change_history),
+                                                    const SizedBox(
+                                                      height: 30,
+                                                    ),
+                                                    RaisedButton.icon(
+                                                        color: Colors
+                                                            .grey.shade600,
+                                                        onPressed: () {
+                                                          dialog_mode([
+                                                            Title(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade600,
+                                                                child: Text(
+                                                                  changeC
+                                                                      ? "Change Comment"
+                                                                      : "Change Value",
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "s1",
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          _screenH /
+                                                                              25),
+                                                                )),
+                                                            SizedBox(
+                                                              height:
+                                                                  _screenH / 30,
+                                                            ),
+                                                            Text(
+                                                              changeC
+                                                                  ? clip.comment
+                                                                      .toString()
+                                                                  : clip.values
+                                                                      .toString(),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      "b1",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize:
+                                                                      _screenH /
+                                                                          32),
+                                                            ),
+                                                            Text(
+                                                                "To\n" +
+                                                                    changedvalue
+                                                                        .text,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    fontFamily:
+                                                                        "b1",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        _screenH /
+                                                                            32)),
+                                                            SizedBox(
+                                                              height:
+                                                                  _screenH / 30,
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                ElevatedButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      setState(
+                                                                          () {
+                                                                        clips.putAt(
+                                                                            index,
+                                                                            ClipBoards(
+                                                                                clip.keys.toString(),
+                                                                                changeC ? clip.values.toString() : changedvalue.text,
+                                                                                "Updated on:" + cutime.toString() + "++" + clip.times.split("++")[1],
+                                                                                changeC ? changedvalue.text : clip.comment.toString()));
+                                                                      });
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                      changedvalue
+                                                                          .clear();
+                                                                      changeC =
+                                                                          false;
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Text(
+                                                                      "Confirm",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "s1",
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize:
+                                                                              _screenH / 29),
+                                                                    )),
+                                                                SizedBox(
+                                                                  width:
+                                                                      _screenWidth /
+                                                                          40,
+                                                                ),
+                                                                ElevatedButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Text(
+                                                                        " Cancel ",
+                                                                        style: TextStyle(
+                                                                            fontFamily:
+                                                                                "s1",
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            fontSize: _screenH / 29)))
+                                                              ],
+                                                            )
+                                                          ]);
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.edit,
+                                                          color: Colors
+                                                              .grey.shade100,
+                                                          size: 45,
+                                                        ),
+                                                        label: Text(
+                                                          "Change value",
+                                                          style: TextStyle(
+                                                              color: Colors.grey
+                                                                  .shade100,
+                                                              fontFamily: "s4",
+                                                              fontSize: 35),
+                                                        ))
+                                                  ],
+                                                )));
+                                      });
+                                },
+                                icon: Icon(Icons.change_circle_outlined)),
+                            IconButton(
+                              highlightColor: Colors.grey.shade400,
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: Colors.blueGrey.shade500,
+                                size: 30,
+                              ),
                               onPressed: () {
                                 showGeneralDialog(
                                     barrierColor: Colors.black.withOpacity(0.5),
@@ -127,342 +358,117 @@ class _clip_infoState extends State<clip_info> {
                                           child: Opacity(
                                               opacity: a1.value,
                                               child: SimpleDialog(
-                                                backgroundColor:
-                                                    Colors.grey.shade300,
-                                                contentPadding:
-                                                    EdgeInsets.fromLTRB(
-                                                        43, 33, 43, 33),
-                                                title: Row(
-                                                  children: [
-                                                    const Text(
-                                                      "Change ",
-                                                      style: TextStyle(
-                                                          fontFamily: "s3",
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 42),
-                                                    ),
-
-                                                    SizedBox(
-                                                      width: 2,
-                                                    ),
-                                                    changeComment()
-                                                    // FlatButton(
-                                                    //     color: changeC
-                                                    //         ? Colors.lightGreen
-                                                    //         : Colors
-                                                    //             .grey.shade300,
-                                                    //     onPressed: () {
-                                                    //       setState(() {
-                                                    //         changeV = false;
-                                                    //         changeC = true;
-                                                    //       });
-                                                    //     },
-                                                    //     child: const Text(
-                                                    //       "Comment ",
-                                                    //       style: TextStyle(
-                                                    //           fontFamily: "s3",
-                                                    //           fontWeight:
-                                                    //               FontWeight
-                                                    //                   .bold,
-                                                    //           fontSize: 42),
-                                                    //     ))
-                                                  ],
-                                                ),
-                                                children: [
-                                                  //oldValue(clip),
-
-                                                  TextFieldForm(
-                                                      screenWidth: _screenWidth,
-                                                      value: changedvalue,
-                                                      hint: "New Value/Comment",
-                                                      prefix:
-                                                          Icons.change_history),
-                                                  const SizedBox(
-                                                    height: 30,
-                                                  ),
-                                                  RaisedButton.icon(
-                                                      color:
-                                                          Colors.grey.shade600,
-                                                      onPressed: () {
-                                                        dialog_mode([
-                                                          Title(
-                                                              color: Colors.grey
-                                                                  .shade600,
-                                                              child: Text(
-                                                                changeC
-                                                                    ? "Change Comment"
-                                                                    : "Change Value",
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "s1",
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        _screenH /
-                                                                            25),
-                                                              )),
-                                                          SizedBox(
-                                                            height:
-                                                                _screenH / 30,
-                                                          ),
-                                                          Text(
-                                                            changeC
-                                                                ? clip.comment
-                                                                    .toString()
-                                                                : clip.values
-                                                                    .toString(),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    "b1",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize:
-                                                                    _screenH /
-                                                                        32),
-                                                          ),
-                                                          Text(
-                                                              "To\n" +
-                                                                  changedvalue
-                                                                      .text,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "b1",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize:
-                                                                      _screenH /
-                                                                          32)),
-                                                          SizedBox(
-                                                            height:
-                                                                _screenH / 30,
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              ElevatedButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    setState(
-                                                                        () {
-                                                                      clips.putAt(
-                                                                          index,
-                                                                          ClipBoards(
-                                                                              clip.keys.toString(),
-                                                                              changeC ? clip.values.toString() : changedvalue.text,
-                                                                              "Updated on:" + cutime.toString() + "++" + clip.times.split("++")[1],
-                                                                              changeC ? changedvalue.text : clip.comment.toString()));
-                                                                    });
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    changedvalue
-                                                                        .clear();
-                                                                    changeC =
-                                                                        false;
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  child: Text(
-                                                                    "Confirm",
-                                                                    style: TextStyle(
-                                                                        fontFamily:
-                                                                            "s1",
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontSize:
-                                                                            _screenH /
-                                                                                29),
-                                                                  )),
-                                                              SizedBox(
-                                                                width:
-                                                                    _screenWidth /
-                                                                        40,
-                                                              ),
-                                                              ElevatedButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  child: Text(
-                                                                      " Cancel ",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              "s1",
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          fontSize:
-                                                                              _screenH / 29)))
-                                                            ],
-                                                          )
-                                                        ]);
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.edit,
-                                                        color: Colors
-                                                            .grey.shade100,
-                                                        size: 45,
+                                                  contentPadding:
+                                                      const EdgeInsets.all(25),
+                                                  titlePadding:
+                                                      const EdgeInsets.all(15),
+                                                  title: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      const Icon(
+                                                        Icons.warning,
+                                                        color: Colors.red,
+                                                        size: 30,
                                                       ),
-                                                      label: Text(
-                                                        "Change value",
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        "Delete ${clip.keys.toString()} ?",
                                                         style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily: "s1",
+                                                            fontSize: 30,
+                                                            color: Colors.red),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        FlatButton.icon(
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(48,
+                                                                    15, 48, 15),
+                                                            splashColor: Colors
+                                                                .white
+                                                                .withOpacity(
+                                                                    0.7),
                                                             color: Colors
-                                                                .grey.shade100,
-                                                            fontFamily: "s4",
-                                                            fontSize: 35),
-                                                      ))
-                                                ],
-                                              )));
+                                                                .greenAccent
+                                                                .shade100,
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            icon: Icon(Icons
+                                                                .backspace),
+                                                            label: Text(
+                                                              "Cancel",
+                                                              style: TextStyle(
+                                                                  fontSize: 32,
+                                                                  fontFamily:
+                                                                      "s3"),
+                                                            )),
+                                                        SizedBox(
+                                                          width: 40,
+                                                        ),
+                                                        FlatButton.icon(
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(48,
+                                                                    15, 48, 15),
+                                                            splashColor: Colors
+                                                                .white
+                                                                .withOpacity(
+                                                                    0.7),
+                                                            color: Colors
+                                                                .redAccent
+                                                                .shade100,
+                                                            onPressed: () {
+                                                              clips.deleteAt(
+                                                                  index);
+
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            icon: Icon(
+                                                                Icons.delete),
+                                                            label: Text(
+                                                              "Delete",
+                                                              style: TextStyle(
+                                                                  fontSize: 32,
+                                                                  fontFamily:
+                                                                      "s3"),
+                                                            )),
+                                                      ],
+                                                    )
+                                                  ])));
                                     });
                               },
-                              icon: Icon(Icons.change_circle_outlined)),
-                          IconButton(
-                            highlightColor: Colors.grey.shade400,
-                            icon: Icon(
-                              Icons.delete_outline,
-                              color: Colors.blueGrey.shade500,
-                              size: 30,
                             ),
-                            onPressed: () {
-                              showGeneralDialog(
-                                  barrierColor: Colors.black.withOpacity(0.5),
-                                  transitionDuration:
-                                      Duration(milliseconds: 300),
-                                  barrierDismissible: true,
-                                  barrierLabel: '',
-                                  context: context,
-                                  pageBuilder:
-                                      (context, animation, secondaryAnimation) {
-                                    return Container();
-                                  },
-                                  transitionBuilder: (context, a1, a2, widget) {
-                                    return Transform.scale(
-                                        scale: a1.value,
-                                        child: Opacity(
-                                            opacity: a1.value,
-                                            child: SimpleDialog(
-                                                contentPadding:
-                                                    const EdgeInsets.all(25),
-                                                titlePadding:
-                                                    const EdgeInsets.all(15),
-                                                title: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.warning,
-                                                      color: Colors.red,
-                                                      size: 30,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Text(
-                                                      "Delete ${clip.keys.toString()} ?",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: "s1",
-                                                          fontSize: 30,
-                                                          color: Colors.red),
-                                                    )
-                                                  ],
-                                                ),
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      FlatButton.icon(
-                                                          padding: EdgeInsets
-                                                              .fromLTRB(48, 15,
-                                                                  48, 15),
-                                                          splashColor: Colors
-                                                              .white
-                                                              .withOpacity(0.7),
-                                                          color: Colors
-                                                              .greenAccent
-                                                              .shade100,
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          icon: Icon(
-                                                              Icons.backspace),
-                                                          label: Text(
-                                                            "Cancel",
-                                                            style: TextStyle(
-                                                                fontSize: 32,
-                                                                fontFamily:
-                                                                    "s3"),
-                                                          )),
-                                                      SizedBox(
-                                                        width: 40,
-                                                      ),
-                                                      FlatButton.icon(
-                                                          padding: EdgeInsets
-                                                              .fromLTRB(48, 15,
-                                                                  48, 15),
-                                                          splashColor: Colors
-                                                              .white
-                                                              .withOpacity(0.7),
-                                                          color: Colors
-                                                              .redAccent
-                                                              .shade100,
-                                                          onPressed: () {
-                                                            clips.deleteAt(
-                                                                index);
-
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          icon: Icon(
-                                                              Icons.delete),
-                                                          label: Text(
-                                                            "Delete",
-                                                            style: TextStyle(
-                                                                fontSize: 32,
-                                                                fontFamily:
-                                                                    "s3"),
-                                                          )),
-                                                    ],
-                                                  )
-                                                ])));
-                                  });
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                      onTap: () {
+                        if (clip.values.toString().contains("http")) {
+                          launch(clip.values.toString());
+                          Clipboard.setData(
+                              ClipboardData(text: clip.values.toString()));
+                        } else {
+                          Clipboard.setData(
+                              ClipboardData(text: clip.values.toString()));
+                          OpenFile.open(clip.values.toString());
+                        }
+                      },
                     ),
-                    onTap: () {
-                      if (clip.values.toString().contains("http")) {
-                        launch(clip.values.toString());
-                        Clipboard.setData(
-                            ClipboardData(text: clip.values.toString()));
-                      } else {
-                        Clipboard.setData(
-                            ClipboardData(text: clip.values.toString()));
-                        OpenFile.open(clip.values.toString());
-                      }
-                    },
-                  ),
-                );
+                  );
+                }
               }));
         });
   }
