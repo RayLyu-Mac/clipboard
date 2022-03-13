@@ -1,4 +1,6 @@
+import 'package:clipboard/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'method.dart';
 
@@ -63,7 +65,7 @@ class _home_pageState extends State<home_page> {
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.grey.shade300,
                   border: Border.all(width: 10, color: Colors.grey.shade300)),
-              width: isfold ? _screenWidth / 2.15 : _screenWidth / 1.15,
+              width: isfold ? _screenWidth / 2.25 : _screenWidth / 1.15,
               child: Column(
                 children: [
                   Row(
@@ -78,6 +80,14 @@ class _home_pageState extends State<home_page> {
                           color: Colors.grey.shade500,
                         ),
                       ),
+                      // ElevatedButton(
+                      //     child: Text("Test"),
+                      //     onPressed: (() {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => animate_try()));
+                      //     }))
                     ],
                   ),
                   Clip_search(
@@ -92,14 +102,17 @@ class _home_pageState extends State<home_page> {
               ),
             ),
             Container(
-              width: 40,
-              child: FlatButton(
-                  onPressed: (() {
-                    setState(() {
-                      isfold = !isfold;
-                    });
-                  }),
-                  child: const Icon(Icons.arrow_right_alt_outlined)),
+              width: _screenWidth / 15,
+              child: GestureDetector(
+                onTap: (() {
+                  setState(() {
+                    isfold = !isfold;
+                  });
+                }),
+                child: Lottie.network(
+                    "https://assets7.lottiefiles.com/packages/lf20_wzaxxisv.json",
+                    fit: BoxFit.fitWidth),
+              ),
             ),
             AnimatedContainer(
               duration: Duration(milliseconds: 600),
@@ -108,7 +121,7 @@ class _home_pageState extends State<home_page> {
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.grey.shade300,
               ),
-              width: isfold ? _screenWidth / 2.15 : 0,
+              width: isfold ? _screenWidth / 2.25 : 0,
               child: clip_info(),
             ),
           ],
