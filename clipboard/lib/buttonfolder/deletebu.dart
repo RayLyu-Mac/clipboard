@@ -50,10 +50,10 @@ class _delete_buttonState extends State<delete_button>
           acontroller.reverse();
         },
         child: TextButton(
-            child: Lottie.network(
+            child: Lottie.asset(
               widget.anim!,
               fit: BoxFit.cover,
-              frameRate: FrameRate(30),
+              frameRate: FrameRate(40),
               height: widget.width,
               controller: acontroller,
             ),

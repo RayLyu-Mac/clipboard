@@ -59,8 +59,10 @@ class _individual_boxState extends State<individual_box>
       child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           child: ListTile(
-            trailing: Lottie.network(widget.anima!,
-                controller: acon, width: widget.anIconWid),
+            trailing: Lottie.asset(widget.anima!,
+                fit: BoxFit.fitWidth,
+                controller: acon,
+                width: widget.anIconWid),
             subtitle: Text(
               widget.subtitile!,
               style: TextStyle(
@@ -91,7 +93,7 @@ class _individual_boxState extends State<individual_box>
             color: hover ? Colors.green.shade50 : Colors.grey.shade200,
             borderRadius: BorderRadius.circular(25),
             border: Border.all(
-                width: 4,
+                width: 4.5,
                 color: hover ? Colors.green.shade300 : Colors.transparent),
             boxShadow: [
               BoxShadow(

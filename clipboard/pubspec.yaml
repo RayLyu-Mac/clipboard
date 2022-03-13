@@ -69,7 +69,13 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - ast/animation/5473-loading-21-pencil.json
+    - ast/animation/64947-working-man.json
+    - ast/animation/57979-delete.json
+    - ast/animation/94539-order-history.json
+    - ast/animation/21928-folder.json
+    - ast/animation/28595-website-building-lottie-animation.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

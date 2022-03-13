@@ -268,7 +268,7 @@ class _clip_infoState extends State<clip_info> {
                               ),
                               width: _screenWidth / 14,
                               anim:
-                                  "https://assets7.lottiefiles.com/temp/lf20_csjVxr.json"),
+                                  "ast/animation/5473-loading-21-pencil.json"),
                           delete_button(
                               height: _screenH / 7.3,
                               childs: SimpleDialog(
@@ -317,10 +317,10 @@ class _clip_infoState extends State<clip_info> {
                                                   fontFamily: "s3"),
                                             )),
                                         SizedBox(
-                                          width: 40,
+                                          width: _screenWidth / 20,
                                         ),
                                         FlatButton.icon(
-                                            padding: EdgeInsets.fromLTRB(
+                                            padding: const EdgeInsets.fromLTRB(
                                                 48, 15, 48, 15),
                                             splashColor:
                                                 Colors.white.withOpacity(0.7),
@@ -340,9 +340,8 @@ class _clip_infoState extends State<clip_info> {
                                       ],
                                     )
                                   ]),
-                              width: _screenWidth / 14.5,
-                              anim:
-                                  "https://assets3.lottiefiles.com/packages/lf20_5ruqbW/Delete.json")
+                              width: _screenWidth / 20,
+                              anim: "ast/animation/57979-delete.json")
                         ],
                       ),
                       onTap: () {

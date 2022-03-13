@@ -83,7 +83,7 @@ class _Clip_searchState extends State<Clip_search>
       children: [
         Container(
           height: 65,
-          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: Colors.white,
@@ -92,11 +92,11 @@ class _Clip_searchState extends State<Clip_search>
             autofocus: true,
             controller: widget.controller,
             onChanged: search,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
             ),
             style: TextStyle(
-              fontSize: _screenH / 25,
+              fontSize: _screenH / 26,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -112,10 +112,10 @@ class _Clip_searchState extends State<Clip_search>
                     for (var index = 0; index < Search_list.length; index++)
                       individual_box(
                         fontsize: _screenH / 27,
-                        anIconWid: _screenWidth / 8.8,
+                        anIconWid: _screenWidth / 14,
                         anima: Search_list[index][1].toString().contains("http")
-                            ? "https://assets4.lottiefiles.com/packages/lf20_bu69n2ss.json"
-                            : "https://assets8.lottiefiles.com/packages/lf20_fx7Gm7.json",
+                            ? "ast/animation/28595-website-building-lottie-animation.json"
+                            : "ast/animation/21928-folder.json",
                         title: Search_list[index][0],
                         subtitile: "\n" +
                             Search_list[index][2].toString() +
@@ -242,8 +242,7 @@ class _Clip_searchState extends State<Clip_search>
             : Container(
                 height: _screenH / 1.75,
                 child: Center(
-                  child: Lottie.network(
-                      "https://assets10.lottiefiles.com/packages/lf20_4wledibb.json"),
+                  child: Lottie.asset("ast/animation/64947-working-man.json"),
                 ),
               )
       ],

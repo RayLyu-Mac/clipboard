@@ -1,4 +1,3 @@
-import 'package:clipboard/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -76,7 +75,7 @@ class _home_pageState extends State<home_page> {
                         "Search",
                         style: TextStyle(
                           fontFamily: "s3",
-                          fontSize: _screenH / 10,
+                          fontSize: _screenH / 13.5,
                           color: Colors.grey.shade500,
                         ),
                       ),
@@ -102,15 +101,14 @@ class _home_pageState extends State<home_page> {
               ),
             ),
             Container(
-              width: _screenWidth / 15,
-              child: GestureDetector(
-                onTap: (() {
+              width: _screenWidth / 14,
+              child: TextButton(
+                onPressed: (() {
                   setState(() {
                     isfold = !isfold;
                   });
                 }),
-                child: Lottie.network(
-                    "https://assets7.lottiefiles.com/packages/lf20_wzaxxisv.json",
+                child: Lottie.asset("ast/animation/94539-order-history.json",
                     fit: BoxFit.fitWidth),
               ),
             ),
