@@ -4,7 +4,13 @@ import 'package:flutter/material.dart';
 class hashTagButton extends StatefulWidget {
   final void Function()? pres;
   final Widget? label;
-  hashTagButton({@required this.pres, @required this.label, Key? key})
+  final double? animatWidht;
+
+  hashTagButton(
+      {@required this.pres,
+      @required this.label,
+      @required this.animatWidht,
+      Key? key})
       : super(key: key);
 
   @override
@@ -19,7 +25,7 @@ class _hashTagButtonState extends State<hashTagButton>
   void initState() {
     // TODO: implement initState
     hascontroller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 600));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 800));
     super.initState();
   }
 
@@ -43,7 +49,9 @@ class _hashTagButtonState extends State<hashTagButton>
         child: Row(
           children: [
             Lottie.asset("ast/animation/hash.json",
-                controller: hascontroller, repeat: false),
+                controller: hascontroller,
+                repeat: false,
+                width: widget.animatWidht),
             widget.label!
           ],
         ),

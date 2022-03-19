@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:clipboard/box_info.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-
+import 'buttonfolder/thash_tag.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'hive_base.dart';
 import 'package:flutter/material.dart';
@@ -51,9 +51,8 @@ class Clip_search extends StatefulWidget {
 }
 
 class _Clip_searchState extends State<Clip_search>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final AnimationController acontroller;
-  late final AnimationController hascontroller;
   List Search_list = [];
   double _screenWidth = 0;
   double _screenH = 0;
@@ -76,8 +75,6 @@ class _Clip_searchState extends State<Clip_search>
     // TODO: implement initState
     acontroller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 850));
-    hascontroller
-    
     super.initState();
   }
 
@@ -422,8 +419,7 @@ class _Clip_searchState extends State<Clip_search>
           width: _screenWidth / 10,
           child: Column(
             children: [
-              for (var pops = 0; pops < widget.tag_num!; pops++)
-                hashTagButton(pops)
+              for (var pops = 0; pops < widget.tag_num!; pops++) hashTag(pops)
             ],
           ),
         );
@@ -431,10 +427,10 @@ class _Clip_searchState extends State<Clip_search>
     );
   }
 
-  hashTagButton(int pops) {
-    return TextButton(
-        onHover: (value) {},
-        onPressed: (() {
+  hashTag(int pops) {
+    return hashTagButton(
+        animatWidht: _screenWidth / 20,
+        pres: (() {
           setState(() {
             widget.controller!.text.isNotEmpty
                 ? widget.controller!.text = widget.controller!.text +
@@ -444,6 +440,6 @@ class _Clip_searchState extends State<Clip_search>
           });
           search(widget.controller!.text);
         }),
-        child: Text(widget.tagss![pops].toString()));
+        label: Text(widget.tagss![pops].toString()));
   }
 }
