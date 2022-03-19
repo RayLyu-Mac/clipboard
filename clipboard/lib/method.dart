@@ -93,12 +93,12 @@ class _Clip_searchState extends State<Clip_search>
         tag_rec(),
         Container(
           width: widget.containwidth! - _screenWidth / 7,
-          height: _screenH / 1.26,
+          height: _screenH / 1.2,
           child: Column(
             children: [
               Container(
                 height: 65,
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.white,
@@ -120,7 +120,7 @@ class _Clip_searchState extends State<Clip_search>
               widget.controller!.text.isNotEmpty
                   ? Container(
                       margin: const EdgeInsets.symmetric(horizontal: 3),
-                      height: _screenH / 1.37,
+                      height: _screenH / 1.4,
                       child: SingleChildScrollView(
                           controller: scrol,
                           child: Column(
