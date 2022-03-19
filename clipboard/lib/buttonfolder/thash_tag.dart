@@ -24,8 +24,8 @@ class _hashTagButtonState extends State<hashTagButton>
   @override
   void initState() {
     // TODO: implement initState
-    hascontroller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 800));
+    hascontroller = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1200));
     super.initState();
   }
 

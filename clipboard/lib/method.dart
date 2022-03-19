@@ -416,7 +416,7 @@ class _Clip_searchState extends State<Clip_search>
     return StatefulBuilder(
       builder: (BuildContext context, setState) {
         return Container(
-          width: _screenWidth / 10,
+          width: _screenWidth / 9,
           child: Column(
             children: [
               for (var pops = 0; pops < widget.tag_num!; pops++) hashTag(pops)
@@ -440,6 +440,6 @@ class _Clip_searchState extends State<Clip_search>
           });
           search(widget.controller!.text);
         }),
-        label: Text(widget.tagss![pops].toString()));
+        label: Text(widget.tagss![pops][0].toString()));
   }
 }
