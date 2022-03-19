@@ -28,10 +28,17 @@ class Clip_search extends StatefulWidget {
   final List? values;
   final List? clipcomment;
   final List? cliptime;
+  final int? tag_num;
+  final double? containwidth;
+
+  final List? tagss;
   Clip_search(
       {@required this.controller,
       @required this.comment,
       @required this.searchS,
+      @required this.tagss,
+      @required this.containwidth,
+      @required this.tag_num,
       @required this.values,
       @required this.cliptime,
       @required this.clipcomment,
@@ -44,8 +51,9 @@ class Clip_search extends StatefulWidget {
 }
 
 class _Clip_searchState extends State<Clip_search>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController acontroller;
+  late final AnimationController hascontroller;
   List Search_list = [];
   double _screenWidth = 0;
   double _screenH = 0;
@@ -54,6 +62,7 @@ class _Clip_searchState extends State<Clip_search>
   int isTT = 1;
   TextEditingController saved_date = TextEditingController();
   String cutime = DateFormat('MM/dd/yyyy').format(DateTime.now());
+  ScrollController scrol = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -66,7 +75,9 @@ class _Clip_searchState extends State<Clip_search>
   void initState() {
     // TODO: implement initState
     acontroller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 650));
+        vsync: this, duration: const Duration(milliseconds: 850));
+    hascontroller
+    
     super.initState();
   }
 
@@ -79,172 +90,205 @@ class _Clip_searchState extends State<Clip_search>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
+        tag_rec(),
         Container(
-          height: 65,
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.white,
-          ),
-          child: TextField(
-            autofocus: true,
-            controller: widget.controller,
-            onChanged: search,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-            ),
-            style: TextStyle(
-              fontSize: _screenH / 26,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        Search_list.isNotEmpty && widget.controller!.text.isNotEmpty
-            ? Container(
-                margin: const EdgeInsets.symmetric(horizontal: 3),
-                height: _screenH / 1.37,
-                child: SingleChildScrollView(
-                    child: Column(
-                  children: [
-                    for (var index = 0; index < Search_list.length; index++)
-                      individual_box(
-                        fontsize: _screenH / 27,
-                        anIconWid: _screenWidth / 14,
-                        anima: Search_list[index][1].toString().contains("http")
-                            ? "ast/animation/28595-website-building-lottie-animation.json"
-                            : "ast/animation/21928-folder.json",
-                        title: Search_list[index][0],
-                        subtitile: "\n" +
-                            Search_list[index][2].toString() +
-                            "\n" +
-                            "${Search_list[index][3].split("++")[1] != "Perm" ? "Expire after ${(double.parse(Search_list[index][3].toString().split("++")[1]) - daysBetween(DateFormat("MM/dd/yyyy").parse(Search_list[index][3].toString().split("++")[0].split(":")[1]), DateTime.now())).toInt()} days" : ""}",
-                        onTap: () {
-                          Search_list[index][2] != "Comment"
-                              ? setState(() {
-                                  if (Search_list[index][1]
-                                      .toString()
-                                      .contains("http")) {
-                                    launch(Search_list[index][1].toString());
-                                    Clipboard.setData(ClipboardData(
-                                        text:
-                                            Search_list[index][1].toString()));
-                                  } else {
-                                    Clipboard.setData(ClipboardData(
-                                        text:
-                                            Search_list[index][1].toString()));
-                                    OpenFile.open(
-                                        Search_list[index][1].toString());
-                                  }
-                                })
-                              : widget.controller!.text.isNotEmpty
-                                  ? dialog_mode([
-                                      Text(
-                                        "Create value for: " +
-                                            widget.controller!.text,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: _screenH / 18,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            fontFamily: "s4"),
-                                      ),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      TextFieldForm(
-                                          screenWidth: _screenWidth,
-                                          hint: " Enter value",
-                                          prefix: Icons.pending_actions,
-                                          value: widget.add_value),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      TextFieldForm(
-                                          screenWidth: _screenWidth,
-                                          prefix: Icons.comment_sharp,
-                                          hint: " Enter Comment",
-                                          value: widget.comment),
-                                      const SizedBox(
-                                        height: 40,
-                                      ),
-                                      checkBmode(),
-                                      const SizedBox(
-                                        height: 40,
-                                      ),
-                                      Container(
-                                        width: _screenWidth / 6,
-                                        height: _screenH / 10,
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey.shade300,
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            boxShadow: [
-                                              const BoxShadow(
-                                                  color: Colors.white,
-                                                  offset: const Offset(-5, -5),
-                                                  blurRadius: 18,
-                                                  spreadRadius: 1.5),
-                                              BoxShadow(
-                                                  color: Colors.grey.shade500,
-                                                  offset: const Offset(5, 5),
-                                                  blurRadius: 18,
-                                                  spreadRadius: 1.5),
-                                            ]),
-                                        child: ElevatedButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.grey.shade400)),
-                                          child: Text(
-                                            "Add value",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontFamily: "s3",
-                                                fontSize: _screenH / 20),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              add_entries(
-                                                widget.controller!.text,
-                                                widget.add_value!.text,
-                                                "Created on:" +
-                                                    cutime +
-                                                    "++${isChecked ? saved_date.text : "Perm"}",
-                                                widget.comment!.text,
-                                              );
-                                              widget.controller!.clear();
-                                              widget.add_value!.clear();
-                                              widget.comment!.clear();
-
-                                              Navigator.pop(context);
-                                              Phoenix.rebirth(context);
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                    ])
-                                  : dialog_mode([
-                                      const Text(
-                                          "Please enter a valid value for the key!")
-                                    ]);
-                          throw "";
-                        },
-                      ),
-                  ],
-                )),
-              )
-            : Container(
-                height: _screenH / 1.75,
-                child: Center(
-                  child: Lottie.asset("ast/animation/64947-working-man.json"),
+          width: widget.containwidth! - _screenWidth / 8,
+          child: Column(
+            children: [
+              Container(
+                height: 65,
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
                 ),
-              )
+                child: TextField(
+                  autofocus: true,
+                  controller: widget.controller,
+                  onChanged: search,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  style: TextStyle(
+                    fontSize: _screenH / 26,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              widget.controller!.text.isNotEmpty
+                  ? Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 3),
+                      height: _screenH / 1.37,
+                      child: SingleChildScrollView(
+                          controller: scrol,
+                          child: Column(
+                            children: [
+                              for (var index = 0;
+                                  index < Search_list.length;
+                                  index++)
+                                individual_box(
+                                  fontsize: _screenH / 27,
+                                  anIconWid: _screenWidth / 16,
+                                  anima: Search_list[index][1]
+                                          .toString()
+                                          .contains("http")
+                                      ? "ast/animation/28595-website-building-lottie-animation.json"
+                                      : "ast/animation/21928-folder.json",
+                                  title: Search_list[index][0],
+                                  subtitile: "\n" +
+                                      Search_list[index][2].toString() +
+                                      "\n" +
+                                      "${Search_list[index][3].split("++")[1] != "Perm" ? "Expire after ${(double.parse(Search_list[index][3].toString().split("++")[1]) - daysBetween(DateFormat("MM/dd/yyyy").parse(Search_list[index][3].toString().split("++")[0].split(":")[1]), DateTime.now())).toInt()} days" : ""}",
+                                  onTap: () {
+                                    Search_list[index][2] != "Comment"
+                                        ? setState(() {
+                                            if (Search_list[index][1]
+                                                .toString()
+                                                .contains("http")) {
+                                              launch(Search_list[index][1]
+                                                  .toString());
+                                              Clipboard.setData(ClipboardData(
+                                                  text: Search_list[index][1]
+                                                      .toString()));
+                                            } else {
+                                              Clipboard.setData(ClipboardData(
+                                                  text: Search_list[index][1]
+                                                      .toString()));
+                                              OpenFile.open(Search_list[index]
+                                                      [1]
+                                                  .toString());
+                                            }
+                                          })
+                                        : widget.controller!.text.isNotEmpty
+                                            ? dialog_mode([
+                                                Text(
+                                                  "Create value for: " +
+                                                      widget.controller!.text,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: _screenH / 18,
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      fontFamily: "s4"),
+                                                ),
+                                                const SizedBox(
+                                                  height: 30,
+                                                ),
+                                                TextFieldForm(
+                                                    screenWidth: _screenWidth,
+                                                    hint: " Enter value",
+                                                    prefix:
+                                                        Icons.pending_actions,
+                                                    value: widget.add_value),
+                                                const SizedBox(
+                                                  height: 30,
+                                                ),
+                                                TextFieldForm(
+                                                    screenWidth: _screenWidth,
+                                                    prefix: Icons.comment_sharp,
+                                                    hint: " Enter Comment",
+                                                    value: widget.comment),
+                                                const SizedBox(
+                                                  height: 40,
+                                                ),
+                                                checkBmode(),
+                                                const SizedBox(
+                                                  height: 40,
+                                                ),
+                                                Container(
+                                                  width: _screenWidth / 6,
+                                                  height: _screenH / 10,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          Colors.grey.shade300,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      boxShadow: [
+                                                        const BoxShadow(
+                                                            color: Colors.white,
+                                                            offset:
+                                                                const Offset(
+                                                                    -5, -5),
+                                                            blurRadius: 18,
+                                                            spreadRadius: 1.5),
+                                                        BoxShadow(
+                                                            color: Colors
+                                                                .grey.shade500,
+                                                            offset:
+                                                                const Offset(
+                                                                    5, 5),
+                                                            blurRadius: 18,
+                                                            spreadRadius: 1.5),
+                                                      ]),
+                                                  child: ElevatedButton(
+                                                    style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(Colors.grey
+                                                                    .shade400)),
+                                                    child: Text(
+                                                      "Add value",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontFamily: "s3",
+                                                          fontSize:
+                                                              _screenH / 20),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        add_entries(
+                                                          widget
+                                                              .controller!.text,
+                                                          widget
+                                                              .add_value!.text,
+                                                          "Created on:" +
+                                                              cutime +
+                                                              "++${isChecked ? "Perm" : saved_date.text.isNotEmpty ? saved_date.text : 0}",
+                                                          widget.comment!.text,
+                                                        );
+                                                        widget.controller!
+                                                            .clear();
+                                                        widget.add_value!
+                                                            .clear();
+                                                        widget.comment!.clear();
+
+                                                        Navigator.pop(context);
+                                                        Phoenix.rebirth(
+                                                            context);
+                                                      });
+                                                    },
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 30,
+                                                ),
+                                              ])
+                                            : dialog_mode([
+                                                const Text(
+                                                    "Please enter a valid value for the key!")
+                                              ]);
+                                    throw "";
+                                  },
+                                ),
+                            ],
+                          )),
+                    )
+                  : Container(
+                      height: _screenH / 1.75,
+                      child: Center(
+                        child: Lottie.asset(
+                            "ast/animation/64947-working-man.json"),
+                      ),
+                    )
+            ],
+          ),
+        )
       ],
     );
   }
@@ -255,9 +299,15 @@ class _Clip_searchState extends State<Clip_search>
 
       for (var i = 0; i < widget.searchS!.length; i++) {
         if (widget.searchS![i]
-            .toString()
-            .toLowerCase()
-            .contains(search_string.toLowerCase())) {
+                .toString()
+                .toLowerCase()
+                .split(" ")
+                .toSet()
+                .containsAll(search_string.toLowerCase().split(" ").toSet()) ||
+            widget.searchS![i]
+                .toString()
+                .toLowerCase()
+                .contains(search_string.toLowerCase())) {
           setState(() {
             Search_list.add([
               widget.searchS![i],
@@ -305,101 +355,95 @@ class _Clip_searchState extends State<Clip_search>
         });
   }
 
-  // checkBmode() {
-  //   return StatefulBuilder(
-  //     builder: (BuildContext context, setState) {
-  //       return CheckboxListTile(
-  //           subtitle: Text(
-  //               "For short time storage, the entry will automatically delete after 30 days"),
-  //           activeColor: Colors.green,
-  //           checkColor: Colors.lightGreen,
-  //           title: isChecked
-  //               ? TextField(
-  //                   controller: saved_date,
-  //                   decoration: InputDecoration(
-  //                       hintText: "How long do you want to save for?"),
-  //                   style: TextStyle(
-  //                       fontFamily: "s4",
-  //                       fontWeight: FontWeight.bold,
-  //                       fontSize: _screenH / 27),
-  //                 )
-  //               : Text(
-  //                   "Long Time Storage",
-  //                   style: TextStyle(
-  //                       fontFamily: "s4",
-  //                       color: Colors.green.shade600,
-  //                       fontWeight: FontWeight.bold,
-  //                       fontSize: _screenH / 27),
-  //                 ),
-  //           value: isChecked,
-  //           onChanged: (n) {
-  //             setState(() {
-  //               isChecked = !isChecked;
-  //             });
-  //           });
-  //     },
-  //   );
-  // }
   checkBmode() {
     return StatefulBuilder(
       builder: (BuildContext context, setState) {
         return Container(
           width: _screenWidth / 1.1,
           height: _screenH / 10,
-          child: GestureDetector(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                isChecked
-                    ? Container(
-                        width: _screenWidth / 1.6,
-                        child: Text(
-                          "Long Time Storage",
-                          style: TextStyle(
-                              fontFamily: "s4",
-                              color: Colors.green.shade600,
-                              fontWeight: FontWeight.bold,
-                              fontSize: _screenH / 27),
-                        ),
-                      )
-                    : Container(
-                        width: _screenWidth / 1.6,
-                        child: TextField(
-                          controller: saved_date,
-                          decoration: InputDecoration(
-                              hintText: "How long do you want to save for?"),
-                          style: TextStyle(
-                              fontFamily: "s4",
-                              fontWeight: FontWeight.bold,
-                              fontSize: _screenH / 27),
-                        ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              isChecked
+                  ? Container(
+                      width: _screenWidth / 1.6,
+                      child: Text(
+                        "Long Time Storage",
+                        style: TextStyle(
+                            fontFamily: "s4",
+                            color: Colors.green.shade600,
+                            fontWeight: FontWeight.bold,
+                            fontSize: _screenH / 27),
                       ),
-                SizedBox(
-                  width: _screenWidth / 16,
-                ),
-                Lottie.network(
-                    "https://assets8.lottiefiles.com/packages/lf20_miuJ5n.json",
-                    fit: BoxFit.cover,
-                    controller: acontroller),
-              ],
-            ),
-            onTap: () {
-              setState(
-                () {
-                  isChecked = !isChecked;
-                },
-              );
+                    )
+                  : Container(
+                      width: _screenWidth / 1.6,
+                      child: TextField(
+                        controller: saved_date,
+                        decoration: InputDecoration(
+                            hintText: "How long do you want to save for?"),
+                        style: TextStyle(
+                            fontFamily: "s4",
+                            fontWeight: FontWeight.bold,
+                            fontSize: _screenH / 27),
+                      ),
+                    ),
+              SizedBox(
+                width: _screenWidth / 16,
+              ),
+              TextButton(
+                  onPressed: (() {
+                    setState(
+                      () {
+                        isChecked = !isChecked;
+                      },
+                    );
 
-              if (isChecked) {
-                acontroller.forward();
-              } else {
-                acontroller.reverse();
-              }
-            },
+                    if (isChecked) {
+                      acontroller.forward();
+                    } else {
+                      acontroller.reverse();
+                    }
+                  }),
+                  child: Lottie.asset("ast/animation/28294-bookmark.json",
+                      fit: BoxFit.cover, controller: acontroller)),
+            ],
           ),
         );
       },
     );
+  }
+
+  tag_rec() {
+    return StatefulBuilder(
+      builder: (BuildContext context, setState) {
+        return Container(
+          width: _screenWidth / 10,
+          child: Column(
+            children: [
+              for (var pops = 0; pops < widget.tag_num!; pops++)
+                hashTagButton(pops)
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  hashTagButton(int pops) {
+    return TextButton(
+        onHover: (value) {},
+        onPressed: (() {
+          setState(() {
+            widget.controller!.text.isNotEmpty
+                ? widget.controller!.text = widget.controller!.text +
+                    " " +
+                    widget.tagss![pops][0].toString()
+                : widget.controller!.text = widget.tagss![pops][0].toString();
+          });
+          search(widget.controller!.text);
+        }),
+        child: Text(widget.tagss![pops].toString()));
   }
 }

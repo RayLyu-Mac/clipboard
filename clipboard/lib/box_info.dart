@@ -146,7 +146,7 @@ class _clip_infoState extends State<clip_info> {
                                   TextFieldForm(
                                       screenWidth: _screenWidth,
                                       value: changedvalue,
-                                      hint: "New Value/Comment",
+                                      hint: "New Value/Key",
                                       prefix: Icons.change_history),
                                   const SizedBox(
                                     height: 30,
@@ -159,7 +159,7 @@ class _clip_infoState extends State<clip_info> {
                                               color: Colors.grey.shade600,
                                               child: Text(
                                                 changeC
-                                                    ? "Change Comment"
+                                                    ? "Change Key"
                                                     : "Change Value",
                                                 style: TextStyle(
                                                     fontFamily: "s1",
@@ -171,7 +171,7 @@ class _clip_infoState extends State<clip_info> {
                                           ),
                                           Text(
                                             changeC
-                                                ? clip.comment.toString()
+                                                ? clip.keys.toString()
                                                 : clip.values.toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
@@ -200,8 +200,11 @@ class _clip_infoState extends State<clip_info> {
                                                       clips.putAt(
                                                           index,
                                                           ClipBoards(
-                                                              clip.keys
-                                                                  .toString(),
+                                                              changeC
+                                                                  ? changedvalue
+                                                                      .text
+                                                                  : clip.keys
+                                                                      .toString(),
                                                               changeC
                                                                   ? clip.values
                                                                       .toString()
@@ -213,11 +216,8 @@ class _clip_infoState extends State<clip_info> {
                                                                   "++" +
                                                                   clip.times.split(
                                                                       "++")[1],
-                                                              changeC
-                                                                  ? changedvalue
-                                                                      .text
-                                                                  : clip.comment
-                                                                      .toString()));
+                                                              clip.comment
+                                                                  .toString()));
                                                     });
                                                     Navigator.pop(context);
                                                     changedvalue.clear();
@@ -372,7 +372,7 @@ class _clip_infoState extends State<clip_info> {
               });
             },
             child: Text(
-              changeC ? "Comment" : "Value",
+              changeC ? "Key" : "Value",
               style: TextStyle(
                   fontFamily: "s3", fontWeight: FontWeight.bold, fontSize: 42),
             ));

@@ -76,6 +76,8 @@ flutter:
     - ast/animation/94539-order-history.json
     - ast/animation/21928-folder.json
     - ast/animation/28595-website-building-lottie-animation.json
+    - ast/animation/28294-bookmark.json
+    - ast/animation/hash.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

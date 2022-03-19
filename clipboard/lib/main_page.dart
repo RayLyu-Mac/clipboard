@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
+import 'math/mostfrq.dart';
 import 'method.dart';
 
 import 'package:hive/hive.dart';
@@ -24,6 +24,8 @@ class _home_pageState extends State<home_page> {
   List clip_Value = [];
   List clip_comments = [];
   List clip_times = [];
+  List<String> tags = [];
+  int popular = 0;
 
   bool isfold = false;
   @override
@@ -38,12 +40,25 @@ class _home_pageState extends State<home_page> {
     // TODO: implement initState
 
     for (var i = 0; i < Hive.box("Clip_board").length; i++) {
-      clip_keys.add(Hive.box("Clip_board").getAt(i).keys);
+      String k = Hive.box("Clip_board").getAt(i).keys;
+      clip_keys.add(k);
+      tags.addAll(k.split(" "));
       clip_Value.add(Hive.box("Clip_board").getAt(i).values);
       clip_comments.add(Hive.box("Clip_board").getAt(i).comment);
       clip_times.add(Hive.box("Clip_board").getAt(i).times);
     }
+    tags.length > 5 ? popular = 5 : popular = tags.length;
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    clip__add_key.dispose();
+    clip__add_value.dispose();
+    clip_comment.dispose();
+    super.dispose();
   }
 
   @override
@@ -64,7 +79,7 @@ class _home_pageState extends State<home_page> {
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.grey.shade300,
                   border: Border.all(width: 10, color: Colors.grey.shade300)),
-              width: isfold ? _screenWidth / 2.25 : _screenWidth / 1.15,
+              width: isfold ? _screenWidth / 2.25 : _screenWidth / 1.55,
               child: Column(
                 children: [
                   Row(
@@ -91,10 +106,14 @@ class _home_pageState extends State<home_page> {
                   ),
                   Clip_search(
                       controller: clip__add_key,
+                      tagss: get_most_freq(tags),
                       searchS: clip_keys,
+                      containwidth:
+                          isfold ? _screenWidth / 2.25 : _screenWidth / 1.55,
                       values: clip_Value,
                       comment: clip_comment,
                       clipcomment: clip_comments,
+                      tag_num: popular,
                       cliptime: clip_times,
                       add_value: clip__add_value)
                 ],
