@@ -98,7 +98,7 @@ class _Clip_searchState extends State<Clip_search>
             children: [
               Container(
                 height: 65,
-                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.white,
@@ -211,8 +211,7 @@ class _Clip_searchState extends State<Clip_search>
                                                         const BoxShadow(
                                                             color: Colors.white,
                                                             offset:
-                                                                const Offset(
-                                                                    -5, -5),
+                                                                Offset(-5, -5),
                                                             blurRadius: 18,
                                                             spreadRadius: 1.5),
                                                         BoxShadow(
@@ -330,28 +329,18 @@ class _Clip_searchState extends State<Clip_search>
 
   dialog_mode(List<Widget> dia) {
     return showGeneralDialog(
-        barrierColor: Colors.grey.shade50.withOpacity(0.5),
-        transitionDuration: Duration(milliseconds: 300),
-        barrierDismissible: true,
-        barrierLabel: '',
-        context: context,
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return Container();
-        },
-        transitionBuilder: (context, a1, a2, widget) {
-          return Transform.scale(
-              scale: a1.value,
-              child: Opacity(
-                  opacity: a1.value,
-                  child:
-                      StatefulBuilder(builder: (context, StateSetter setState) {
-                    return SimpleDialog(
-                      backgroundColor: Colors.grey.shade300,
-                      contentPadding: EdgeInsets.fromLTRB(40, 30, 40, 30),
-                      children: dia,
-                    );
-                  })));
-        });
+      barrierColor: Colors.grey.shade50.withOpacity(0.5),
+      transitionDuration: const Duration(milliseconds: 70),
+      barrierDismissible: true,
+      context: context,
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return SimpleDialog(
+          backgroundColor: Colors.grey.shade300,
+          contentPadding: EdgeInsets.fromLTRB(40, 30, 40, 30),
+          children: dia,
+        );
+      },
+    );
   }
 
   checkBmode() {
@@ -449,7 +438,8 @@ class _Clip_searchState extends State<Clip_search>
         label: Container(
             width: _screenWidth / 19,
             child: Text(
-              widget.tagss![pops][0].toString(),
+              widget.tagss![pops][0].toString() +
+                  " (${widget.tagss![pops][1].toString()})",
             )));
   }
 }
