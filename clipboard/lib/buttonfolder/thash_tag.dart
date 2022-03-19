@@ -2,7 +2,10 @@ import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
 
 class hashTagButton extends StatefulWidget {
-  hashTagButton({Key? key}) : super(key: key);
+  final void Function()? pres;
+  final Widget? label;
+  hashTagButton({@required this.pres, @required this.label, Key? key})
+      : super(key: key);
 
   @override
   State<hashTagButton> createState() => _hashTagButtonState();
@@ -36,8 +39,16 @@ class _hashTagButtonState extends State<hashTagButton>
       onExit: (e) {
         hascontroller.reverse();
       },
-      child: Lottie.asset("ast/animation/hash.json",
-          controller: hascontroller, repeat: false),
+      child: TextButton(
+        child: Row(
+          children: [
+            Lottie.asset("ast/animation/hash.json",
+                controller: hascontroller, repeat: false),
+            widget.label!
+          ],
+        ),
+        onPressed: widget.pres,
+      ),
     );
   }
 }
