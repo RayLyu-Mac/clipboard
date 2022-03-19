@@ -30,7 +30,14 @@ class _hashTagButtonState extends State<hashTagButton>
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      onEnter: (event) {},
+      onEnter: (event) {
+        hascontroller.forward();
+      },
+      onExit: (e) {
+        hascontroller.reverse();
+      },
+      child: Lottie.asset("ast/animation/hash.json",
+          controller: hascontroller, repeat: false),
     );
   }
 }
