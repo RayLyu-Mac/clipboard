@@ -62,6 +62,7 @@ class _Clip_searchState extends State<Clip_search>
   TextEditingController saved_date = TextEditingController();
   String cutime = DateFormat('MM/dd/yyyy').format(DateTime.now());
   ScrollController scrol = ScrollController();
+  ScrollController hast = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -91,7 +92,8 @@ class _Clip_searchState extends State<Clip_search>
       children: [
         tag_rec(),
         Container(
-          width: widget.containwidth! - _screenWidth / 8,
+          width: widget.containwidth! - _screenWidth / 7,
+          height: _screenH / 1.26,
           child: Column(
             children: [
               Container(
@@ -417,10 +419,14 @@ class _Clip_searchState extends State<Clip_search>
       builder: (BuildContext context, setState) {
         return Container(
           width: _screenWidth / 9,
-          child: Column(
-            children: [
-              for (var pops = 0; pops < widget.tag_num!; pops++) hashTag(pops)
-            ],
+          height: _screenH / 1.2,
+          child: SingleChildScrollView(
+            controller: hast,
+            child: Column(
+              children: [
+                for (var pops = 0; pops < widget.tag_num!; pops++) hashTag(pops)
+              ],
+            ),
           ),
         );
       },
@@ -429,7 +435,7 @@ class _Clip_searchState extends State<Clip_search>
 
   hashTag(int pops) {
     return hashTagButton(
-        animatWidht: _screenWidth / 20,
+        animatWidht: _screenWidth / 22,
         pres: (() {
           setState(() {
             widget.controller!.text.isNotEmpty
@@ -440,6 +446,10 @@ class _Clip_searchState extends State<Clip_search>
           });
           search(widget.controller!.text);
         }),
-        label: Text(widget.tagss![pops][0].toString()));
+        label: Container(
+            width: _screenWidth / 19,
+            child: Text(
+              widget.tagss![pops][0].toString(),
+            )));
   }
 }

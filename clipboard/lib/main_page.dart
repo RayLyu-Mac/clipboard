@@ -47,7 +47,7 @@ class _home_pageState extends State<home_page> {
       clip_comments.add(Hive.box("Clip_board").getAt(i).comment);
       clip_times.add(Hive.box("Clip_board").getAt(i).times);
     }
-    tags.length > 5 ? popular = 5 : popular = tags.length;
+    tags.length > 10 ? popular = 10 : popular = tags.length;
 
     super.initState();
   }
