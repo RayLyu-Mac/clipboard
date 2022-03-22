@@ -5,10 +5,12 @@ class hashTagButton extends StatefulWidget {
   final void Function()? pres;
   final Widget? label;
   final double? animatWidht;
+  final MaterialStateProperty<Color>? istab;
 
   hashTagButton(
       {@required this.pres,
       @required this.label,
+      @required this.istab,
       @required this.animatWidht,
       Key? key})
       : super(key: key);
@@ -46,6 +48,7 @@ class _hashTagButtonState extends State<hashTagButton>
         hascontroller.reverse();
       },
       child: TextButton(
+        style: ButtonStyle(backgroundColor: widget.istab),
         child: Row(
           children: [
             Lottie.asset("ast/animation/hash.json",

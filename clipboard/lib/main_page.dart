@@ -79,7 +79,7 @@ class _home_pageState extends State<home_page> {
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.grey.shade300,
                   border: Border.all(width: 10, color: Colors.grey.shade300)),
-              width: isfold ? _screenWidth / 2.25 : _screenWidth / 1.2,
+              width: isfold ? _screenWidth / 2.18 : _screenWidth / 1.2,
               child: Column(
                 children: [
                   Row(
@@ -109,7 +109,7 @@ class _home_pageState extends State<home_page> {
                       tagss: get_most_freq(tags),
                       searchS: clip_keys,
                       containwidth:
-                          isfold ? _screenWidth / 2.25 : _screenWidth / 1.2,
+                          isfold ? _screenWidth / 2.18 : _screenWidth / 1.2,
                       values: clip_Value,
                       comment: clip_comment,
                       clipcomment: clip_comments,
@@ -138,7 +138,7 @@ class _home_pageState extends State<home_page> {
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.grey.shade300,
               ),
-              width: isfold ? _screenWidth / 2.25 : 0,
+              width: isfold ? _screenWidth / 2.38 : 0,
               child: clip_info(),
             ),
           ],

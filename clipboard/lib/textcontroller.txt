@@ -1,0 +1,2 @@
+Using 
+texteditorcontroller.text = value to give texteditor value 

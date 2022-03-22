@@ -239,7 +239,6 @@ class _clip_infoState extends State<clip_info> {
                                               ElevatedButton(
                                                   onPressed: () {
                                                     Navigator.pop(context);
-                                                    Navigator.pop(context);
                                                   },
                                                   child: Text(" Cancel ",
                                                       style: TextStyle(
@@ -266,7 +265,7 @@ class _clip_infoState extends State<clip_info> {
                                       ))
                                 ],
                               ),
-                              width: _screenWidth / 14,
+                              width: _screenWidth / 16,
                               anim:
                                   "ast/animation/5473-loading-21-pencil.json"),
                           delete_button(
@@ -340,7 +339,7 @@ class _clip_infoState extends State<clip_info> {
                                       ],
                                     )
                                   ]),
-                              width: _screenWidth / 20,
+                              width: _screenWidth / 22,
                               anim: "ast/animation/57979-delete.json")
                         ],
                       ),

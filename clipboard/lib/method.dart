@@ -14,6 +14,7 @@ import 'textfield.dart';
 import 'inidvi.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'math/mostfrq.dart';
 
 add_entries(String ckey, String cvalue, String storedtime, String Clipcomment) {
   final clip_hive = Hive.box("Clip_board");
@@ -31,7 +32,7 @@ class Clip_search extends StatefulWidget {
   final int? tag_num;
   final double? containwidth;
 
-  final List? tagss;
+  final List<List>? tagss;
   Clip_search(
       {@required this.controller,
       @required this.comment,
@@ -58,7 +59,10 @@ class _Clip_searchState extends State<Clip_search>
   double _screenH = 0;
   bool isTab = true;
   bool isChecked = false;
+  List<String> newtag = [];
+  List<List> wholenew = [];
   int isTT = 1;
+
   TextEditingController saved_date = TextEditingController();
   String cutime = DateFormat('MM/dd/yyyy').format(DateTime.now());
   ScrollController scrol = ScrollController();
@@ -324,6 +328,10 @@ class _Clip_searchState extends State<Clip_search>
           "Created on:${cutime}++Perm"
         ]);
       });
+    } else {
+      setState(() {
+        wholenew = widget.tagss!;
+      });
     }
   }
 
@@ -413,7 +421,21 @@ class _Clip_searchState extends State<Clip_search>
             controller: hast,
             child: Column(
               children: [
-                for (var pops = 0; pops < widget.tag_num!; pops++) hashTag(pops)
+                Text(
+                  "Tags Used Most frequently",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: _screenH / 36,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "b1"),
+                ),
+                for (var pops = 0;
+                    pops <
+                        (newtag.isNotEmpty
+                            ? wholenew.length - 1
+                            : widget.tag_num!);
+                    pops++)
+                  hashTag(pops)
               ],
             ),
           ),
@@ -424,22 +446,36 @@ class _Clip_searchState extends State<Clip_search>
 
   hashTag(int pops) {
     return hashTagButton(
-        animatWidht: _screenWidth / 22,
+        animatWidht: _screenWidth / 24,
         pres: (() {
           setState(() {
             widget.controller!.text.isNotEmpty
                 ? widget.controller!.text = widget.controller!.text +
                     " " +
-                    widget.tagss![pops][0].toString()
+                    (wholenew.isNotEmpty
+                        ? wholenew[pops][0].toString()
+                        : widget.tagss![pops][0].toString())
                 : widget.controller!.text = widget.tagss![pops][0].toString();
           });
           search(widget.controller!.text);
+          newtag.clear();
+          Search_list.forEach((element) {
+            newtag.addAll(element[0].toString().split(" "));
+          });
+          wholenew = get_most_freq(newtag);
         }),
+        istab: MaterialStateProperty.all(Colors.grey.shade300.withOpacity(0.9)),
         label: Container(
-            width: _screenWidth / 19,
+            width: _screenWidth / 21,
             child: Text(
-              widget.tagss![pops][0].toString() +
-                  " (${widget.tagss![pops][1].toString()})",
+              wholenew.isNotEmpty
+                  ? (wholenew[pops][0] + "(${wholenew[pops][1]})")
+                  : (widget.tagss![pops][0].toString() +
+                      " (${widget.tagss![pops][1].toString()})"),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: _screenH / 55,
+                  color: Colors.grey.shade700),
             )));
   }
 }
