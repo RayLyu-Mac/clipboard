@@ -86,8 +86,8 @@ class _Clip_searchState extends State<Clip_search>
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     acontroller.dispose();
+    super.dispose();
   }
 
   @override
@@ -340,6 +340,7 @@ class _Clip_searchState extends State<Clip_search>
       barrierColor: Colors.grey.shade50.withOpacity(0.5),
       transitionDuration: const Duration(milliseconds: 70),
       barrierDismissible: true,
+      barrierLabel: "Test",
       context: context,
       pageBuilder: (context, animation, secondaryAnimation) {
         return SimpleDialog(

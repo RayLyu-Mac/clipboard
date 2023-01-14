@@ -151,8 +151,7 @@ class _clip_infoState extends State<clip_info> {
                                   const SizedBox(
                                     height: 30,
                                   ),
-                                  RaisedButton.icon(
-                                      color: Colors.grey.shade600,
+                                  TextButton.icon(
                                       onPressed: () {
                                         dialog_mode([
                                           Title(
@@ -299,12 +298,7 @@ class _clip_infoState extends State<clip_info> {
                                   children: [
                                     Row(
                                       children: [
-                                        FlatButton.icon(
-                                            padding: EdgeInsets.fromLTRB(
-                                                48, 15, 48, 15),
-                                            splashColor:
-                                                Colors.white.withOpacity(0.7),
-                                            color: Colors.greenAccent.shade100,
+                                        TextButton.icon(
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
@@ -318,12 +312,7 @@ class _clip_infoState extends State<clip_info> {
                                         SizedBox(
                                           width: _screenWidth / 20,
                                         ),
-                                        FlatButton.icon(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                48, 15, 48, 15),
-                                            splashColor:
-                                                Colors.white.withOpacity(0.7),
-                                            color: Colors.redAccent.shade100,
+                                        TextButton.icon(
                                             onPressed: () {
                                               clips.deleteAt(index);
 
@@ -364,7 +353,7 @@ class _clip_infoState extends State<clip_info> {
   changeComment() {
     return StatefulBuilder(
       builder: (BuildContext context, setState) {
-        return FlatButton(
+        return TextButton(
             onPressed: () {
               setState(() {
                 changeC = !changeC;
