@@ -1,27 +1,26 @@
 import spacy
 from PyPDF2 import PdfReader
-from tkinter import Tk, filedialog
-
-r = Tk()
-r.withdraw()
-filename = filedialog.askopenfilename()
-print(filename)
-r.clipboard_clear()
-r.clipboard_append(filename)
-r.update() # now it stays on the clipboard after the window is closed
-
+import sys
+import os
+print(sys.argv[1])
+Direc = sys.argv[1]
 
 nlp = spacy.load("en_core_web_sm")
+for x in os.listdir(Direc):
+    if x.endswith(".pdf") or x.endswith(".docx"):
+        print(x)
+        file_path = Direc+"\\"+x
+        print(file_path)
+        reader = PdfReader(file_path)
 
-reader = PdfReader("C:/Users/Bill Lin/PycharmProjects/tut4/Case Study.pdf")
+        number_of_pages = len(reader.pages)
 
-number_of_pages = len(reader.pages)
+        page = reader.pages[0]
 
-page = reader.pages[5]
+        text = page.extract_text()
 
-text = page.extract_text()
+        doc = nlp(text)
 
-doc = nlp(text)
+        print(doc.ents)
 
-print(doc.ents)
-r.destroy()
+
