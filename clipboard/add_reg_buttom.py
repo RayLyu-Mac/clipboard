@@ -12,7 +12,8 @@ hidden_terminal = '\\'.join(python_exe.split('\\')[:-1])+"\\pythonw.exe"
 
 
 # Set the path of the context menu (right-click menu)
-key_path = r'Directory\\Background\\shell\\FileU\\' # Change 'Organiser' to the name of your project
+key_path = r'Directory\\Background\\shell\\clipboard' # Change 'Organiser' to the name of your project
+
 
 # Create outer key
 key = reg.CreateKey(reg.HKEY_CLASSES_ROOT, key_path)

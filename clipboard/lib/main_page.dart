@@ -15,6 +15,7 @@ class home_page extends StatefulWidget {
 }
 
 class _home_pageState extends State<home_page> {
+
   TextEditingController clip__add_key = TextEditingController();
   TextEditingController clip__add_value = TextEditingController();
   TextEditingController clip_comment = TextEditingController();

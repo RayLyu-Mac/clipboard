@@ -45,7 +45,7 @@ class _TextFieldFormState extends State<TextFieldForm> {
         style: TextStyle(
             fontSize: 35,
             color: Colors.grey.shade800,
-            fontFamily: "b1",
+            fontFamily: "co",
             fontWeight: FontWeight.bold),
         decoration: InputDecoration(
             border: InputBorder.none,
