@@ -4,7 +4,6 @@ import sys
 import os
 print(sys.argv[1])
 Direc = sys.argv[1]
-
 nlp = spacy.load("en_core_web_sm")
 for x in os.listdir(Direc):
     if x.endswith(".pdf") or x.endswith(".docx"):
@@ -20,7 +19,12 @@ for x in os.listdir(Direc):
         text = page.extract_text()
 
         doc = nlp(text)
-
+        keywords = doc.ents
         print(doc.ents)
 
+
+f = open("keywords_out.txt", "a")
+for i in doc.ents:
+    f.writelines(i.text)
+f.close()
 
