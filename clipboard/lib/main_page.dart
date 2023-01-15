@@ -47,7 +47,7 @@ class _home_pageState extends State<home_page> {
       clip_comments.add(Hive.box("Clip_board").getAt(i).comment);
       clip_times.add(Hive.box("Clip_board").getAt(i).times);
     }
-    tags.length > 12 ? popular = 12 : popular = tags.length;
+    tags.length > 10 ? popular = 10 : popular = tags.length;
 
     super.initState();
   }
@@ -74,12 +74,12 @@ class _home_pageState extends State<home_page> {
             AnimatedContainer(
               curve: Curves.easeInCirc,
               duration: const Duration(milliseconds: 200),
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.grey.shade300,
                   border: Border.all(width: 10, color: Colors.grey.shade300)),
-              width: isfold ? _screenWidth / 2.18 : _screenWidth / 1.2,
+              width: isfold ? _screenWidth / 2.18 : _screenWidth / 1.1,
               child: Column(
                 children: [
                   Row(
@@ -87,13 +87,39 @@ class _home_pageState extends State<home_page> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Search",
+                        "Find U File & Web",
                         style: TextStyle(
-                          fontFamily: "s3",
-                          fontSize: _screenH / 13.5,
-                          color: Colors.grey.shade500,
+                          fontFamily: "cd",
+                          fontWeight: FontWeight.w900,
+                          fontSize: _screenH / 17,
+                          color: Colors.grey.shade800,
                         ),
                       ),
+                      Container(
+                        width: _screenWidth / 14,
+                        child: TextButton(
+                          onPressed: (() {
+                            setState(() {
+                              isfold = !isfold;
+                            });
+                          }),
+                          child: Lottie.asset(
+                              "ast/animation/94539-order-history.json",
+                              fit: BoxFit.fitWidth),
+                        ),
+                      ),
+                      // Container(
+                      //   width: _screenWidth / 14,
+                      //   child: TextButton(
+                      //     onPressed: (() {
+                      //       setState(() {
+                      //         isfold = !isfold;
+                      //       });
+                      //     }),
+                      //     child: Lottie.asset("ast/animation/met.json",
+                      //         fit: BoxFit.fitWidth),
+                      //   ),
+                      // ),
                       // ElevatedButton(
                       //     child: Text("Test"),
                       //     onPressed: (() {
@@ -106,6 +132,7 @@ class _home_pageState extends State<home_page> {
                   ),
                   Clip_search(
                       controller: clip__add_key,
+                      fold: isfold,
                       tagss: get_most_freq(tags),
                       searchS: clip_keys,
                       containwidth:
@@ -117,18 +144,6 @@ class _home_pageState extends State<home_page> {
                       cliptime: clip_times,
                       add_value: clip__add_value)
                 ],
-              ),
-            ),
-            Container(
-              width: _screenWidth / 14,
-              child: TextButton(
-                onPressed: (() {
-                  setState(() {
-                    isfold = !isfold;
-                  });
-                }),
-                child: Lottie.asset("ast/animation/94539-order-history.json",
-                    fit: BoxFit.fitWidth),
               ),
             ),
             AnimatedContainer(

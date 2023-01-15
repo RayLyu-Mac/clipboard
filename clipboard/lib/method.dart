@@ -31,10 +31,12 @@ class Clip_search extends StatefulWidget {
   final List? cliptime;
   final int? tag_num;
   final double? containwidth;
+  final bool? fold;
 
   final List<List>? tagss;
   Clip_search(
       {@required this.controller,
+      @required this.fold,
       @required this.comment,
       @required this.searchS,
       @required this.tagss,
@@ -62,6 +64,55 @@ class _Clip_searchState extends State<Clip_search>
   List<String> newtag = [];
   List<List> wholenew = [];
   int isTT = 1;
+
+  List<List> meetingTile = [
+    [
+      "Meeting With Supervisor",
+      "work",
+      "2 day",
+      1,
+      "UI construction",
+      "D:/SteamLibrary/Control"
+    ],
+    [
+      "Dept Presentation",
+      "work",
+      "7 days",
+      2,
+      "Innovation Presentation",
+      "D:/SteamLibrary/Control"
+    ],
+    [
+      "Vector Calculus",
+      "study",
+      "Inf",
+      4,
+      "Fundamental for Machine Learning and Deep Learning",
+      "https://www.youtube.com/watch?v=4C2PeYoDGpA&t=3006s"
+    ],
+    [
+      "Guitar Lesson",
+      "Leisure",
+      "Inf",
+      5,
+      "Learn a new song",
+      "https://www.youtube.com/watch?v=4C2PeYoDGpA&t=3006s"
+    ]
+  ];
+
+  Map<String, String> listTileAni = {
+    "work": "ast/animation/work.json",
+    "study": "ast/animation/study.json",
+    "Leisure": "ast/animation/play.json"
+  };
+
+  List<Color> priorityC = [
+    Colors.red.shade600,
+    Colors.redAccent.shade200,
+    Colors.orange.shade300,
+    Colors.lightGreenAccent,
+    Colors.green.shade400
+  ];
 
   TextEditingController saved_date = TextEditingController();
   String cutime = DateFormat('MM/dd/yyyy').format(DateTime.now());
@@ -94,20 +145,24 @@ class _Clip_searchState extends State<Clip_search>
   Widget build(BuildContext context) {
     return Row(
       children: [
-        tag_rec(),
+        widget.controller!.text.isNotEmpty ? tag_rec() : Container(),
         Container(
-          width: widget.containwidth! - _screenWidth / 7,
+          width: widget.containwidth! -
+              (widget.controller!.text.isNotEmpty ? _screenWidth / 7 : 0),
           height: _screenH / 1.2,
           child: Column(
             children: [
               Container(
-                height: 65,
-                margin: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                width: _screenWidth / 1.2,
+                height: _screenH / 13,
+                margin: EdgeInsets.symmetric(
+                    horizontal: _screenWidth / 60, vertical: 4),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.white,
                 ),
                 child: TextField(
+                  cursorHeight: 0,
                   autofocus: true,
                   controller: widget.controller,
                   onChanged: search,
@@ -115,8 +170,8 @@ class _Clip_searchState extends State<Clip_search>
                     border: InputBorder.none,
                   ),
                   style: TextStyle(
-                    fontSize: _screenH / 26,
-                    fontWeight: FontWeight.bold,
+                    fontSize: _screenH / 25,
+                    fontFamily: "co",
                     color: Colors.black,
                   ),
                 ),
@@ -124,7 +179,7 @@ class _Clip_searchState extends State<Clip_search>
               widget.controller!.text.isNotEmpty
                   ? Container(
                       margin: const EdgeInsets.symmetric(horizontal: 3),
-                      height: _screenH / 1.4,
+                      height: _screenH / 1.35,
                       child: SingleChildScrollView(
                           controller: scrol,
                           child: Column(
@@ -134,7 +189,7 @@ class _Clip_searchState extends State<Clip_search>
                                   index++)
                                 individual_box(
                                   fontsize: _screenH / 27,
-                                  anIconWid: _screenWidth / 16,
+                                  anIconWid: _screenWidth / 12,
                                   anima: Search_list[index][1]
                                           .toString()
                                           .contains("http")
@@ -146,7 +201,7 @@ class _Clip_searchState extends State<Clip_search>
                                       "\n" +
                                       "${Search_list[index][3].split("++")[1] != "Perm" ? "Expire after ${(double.parse(Search_list[index][3].toString().split("++")[1]) - daysBetween(DateFormat("MM/dd/yyyy").parse(Search_list[index][3].toString().split("++")[0].split(":")[1]), DateTime.now())).toInt()} days" : ""}",
                                   onTap: () {
-                                    Search_list[index][2] != "Comment"
+                                    Search_list[index][2] != "Add New Entry"
                                         ? setState(() {
                                             if (Search_list[index][1]
                                                 .toString()
@@ -281,13 +336,14 @@ class _Clip_searchState extends State<Clip_search>
                             ],
                           )),
                     )
-                  : Container(
-                      height: _screenH / 1.75,
-                      child: Center(
-                        child: Lottie.asset(
-                            "ast/animation/64947-working-man.json"),
-                      ),
-                    )
+                  : tag_row()
+              // Container(
+              //     height: _screenH / 1.75,
+              //     child: Center(
+              //       child: Lottie.asset(
+              //           "ast/animation/64947-working-man.json"),
+              //     ),
+              //   )
             ],
           ),
         )
@@ -324,7 +380,7 @@ class _Clip_searchState extends State<Clip_search>
         Search_list.add([
           "Add ${search_string}",
           "Add Value",
-          "Comment",
+          "Add New Entry",
           "Created on:${cutime}++Perm"
         ]);
       });
@@ -416,27 +472,166 @@ class _Clip_searchState extends State<Clip_search>
     return StatefulBuilder(
       builder: (BuildContext context, setState) {
         return Container(
-          width: _screenWidth / 9,
+          width: _screenWidth / 8,
           height: _screenH / 1.2,
           child: SingleChildScrollView(
             controller: hast,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  "Tags Used Most frequently",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: _screenH / 36,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "b1"),
-                ),
                 for (var pops = 0;
                     pops <
                         (newtag.isNotEmpty
                             ? wholenew.length - 1
                             : widget.tag_num!);
                     pops++)
-                  hashTag(pops)
+                  Container(
+                      margin: EdgeInsets.only(bottom: _screenH / 60),
+                      child: hashTag(pops)),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  tag_row() {
+    return StatefulBuilder(
+      builder: (BuildContext context, setState) {
+        return Container(
+          margin: EdgeInsets.symmetric(
+              vertical: _screenH / 25, horizontal: _screenWidth / 60),
+          width: _screenWidth / 1.2,
+          height: _screenH / 1.5,
+          child: SingleChildScrollView(
+            controller: hast,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ExpansionTile(
+                  initiallyExpanded: true,
+                  title: Text(
+                    "Quick Access",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: _screenH / 36,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "cd"),
+                  ),
+                  children: [
+                    for (var i = 0; i < meetingTile.length; i++)
+                      Container(
+                        height: _screenH / 10.5,
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: priorityC[meetingTile[i][3] - 1]
+                                .withOpacity(0.7),
+                            border: Border.all(
+                                color: priorityC[meetingTile[i][3] - 1],
+                                width: 7),
+                            borderRadius: BorderRadius.circular(15)),
+                        width: _screenWidth / 1.3,
+                        child: ListTile(
+                            onTap: () {
+                              setState(() {
+                                if (meetingTile[i][5]
+                                    .toString()
+                                    .contains("http")) {
+                                  launch(meetingTile[i][5].toString());
+                                  Clipboard.setData(ClipboardData(
+                                      text: meetingTile[i][5].toString()));
+                                } else {
+                                  Clipboard.setData(ClipboardData(
+                                      text: meetingTile[i][5].toString()));
+                                  OpenFile.open(meetingTile[i][5].toString());
+                                }
+                              });
+                            },
+                            minLeadingWidth: _screenWidth / 16,
+                            title: Text(
+                              meetingTile[i][0],
+                              style: TextStyle(
+                                  fontFamily: "co",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: _screenH / 33),
+                            ),
+                            subtitle: Text(meetingTile[i][4],
+                                style: TextStyle(
+                                    fontFamily: "co",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: _screenH / 40)),
+                            leading: Container(
+                              width: _screenWidth / 24,
+                              child: Lottie.asset(
+                                  listTileAni[meetingTile[i][1]]!,
+                                  fit: BoxFit.fitWidth),
+                            )),
+                      )
+                  ],
+                ),
+                ExpansionTile(
+                  initiallyExpanded: true,
+                  title: Text(
+                    "Newly Added Tags",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: _screenH / 36,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "cd"),
+                  ),
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: _screenH / 30),
+                      width: _screenWidth / 1.2,
+                      height: _screenH / 6,
+                      child: GridView.count(
+                        crossAxisCount: 5,
+                        childAspectRatio: 2.5,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        children: [
+                          for (var pops = 0; pops < 5; pops++) hashTag(pops)
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                ExpansionTile(
+                  initiallyExpanded: true,
+                  title: Text(
+                    "Most Frequent Used Tags",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: _screenH / 36,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "cd"),
+                  ),
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: _screenH / 30),
+                      width: _screenWidth / 1.2,
+                      height: _screenH / 3.8,
+                      child: GridView.count(
+                        crossAxisCount: 5,
+                        childAspectRatio: 2.5,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        children: [
+                          for (var pops = 0;
+                              pops <
+                                  (newtag.isNotEmpty
+                                      ? wholenew.length - 1
+                                      : widget.tag_num!);
+                              pops++)
+                            hashTag(pops)
+                        ],
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -467,15 +662,19 @@ class _Clip_searchState extends State<Clip_search>
         }),
         istab: MaterialStateProperty.all(Colors.grey.shade300.withOpacity(0.9)),
         label: Container(
-            width: _screenWidth / 21,
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(5),
+            width: _screenWidth / 15,
             child: Text(
               wholenew.isNotEmpty
-                  ? (wholenew[pops][0] + "(${wholenew[pops][1]})")
-                  : (widget.tagss![pops][0].toString() +
-                      " (${widget.tagss![pops][1].toString()})"),
+                  ? (wholenew[pops][0] + "(${wholenew[pops][1]})").toUpperCase()
+                  : ((widget.tagss![pops][0].toString() +
+                          " (${widget.tagss![pops][1].toString()})"))
+                      .toUpperCase(),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: _screenH / 55,
+                  fontFamily: "co",
+                  fontSize: _screenH / 65,
                   color: Colors.grey.shade700),
             )));
   }

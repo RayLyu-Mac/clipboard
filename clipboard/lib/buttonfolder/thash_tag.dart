@@ -48,7 +48,12 @@ class _hashTagButtonState extends State<hashTagButton>
         hascontroller.reverse();
       },
       child: TextButton(
-        style: ButtonStyle(backgroundColor: widget.istab),
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(17),
+                    side: BorderSide(color: Colors.grey.shade700, width: 4))),
+            backgroundColor: widget.istab),
         child: Row(
           children: [
             Lottie.asset("ast/animation/hash.json",

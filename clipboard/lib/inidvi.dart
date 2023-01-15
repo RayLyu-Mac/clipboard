@@ -64,36 +64,36 @@ class _individual_boxState extends State<individual_box>
                 controller: acon,
                 width: widget.anIconWid),
             subtitle: Text(
-              widget.subtitile!,
+              widget.title!.replaceAll(" ", " + "),
               style: TextStyle(
-                fontFamily: "s4",
-                fontSize: widget.fontsize! * 0.75,
+                fontFamily: "co",
+                fontSize: widget.fontsize!,
                 color: Colors.grey.shade600,
                 fontWeight: FontWeight.bold,
               ),
             ),
             title: Text(
-              widget.title!,
+              widget.subtitile!,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontFamily: "s1",
-                  fontSize: widget.fontsize,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey.shade600,
+                  fontFamily: "cd",
+                  fontSize: widget.fontsize! * 1.15,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.grey.shade700,
                   decoration: TextDecoration.underline),
             ),
             onTap: widget.onTap,
           ),
           margin: EdgeInsets.symmetric(
-              vertical: widget.anIconWid! * 0.045, horizontal: 12),
+              vertical: widget.anIconWid! * 0.05, horizontal: 12),
           padding: EdgeInsets.symmetric(
-              horizontal: widget.anIconWid! * 0.01,
-              vertical: widget.anIconWid! * 0.065),
+            horizontal: widget.anIconWid! * 0.012,
+          ),
           decoration: BoxDecoration(
             color: hover ? Colors.green.shade50 : Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(35),
             border: Border.all(
-                width: 4.5,
+                width: 12,
                 color: hover ? Colors.green.shade300 : Colors.transparent),
             boxShadow: [
               BoxShadow(
