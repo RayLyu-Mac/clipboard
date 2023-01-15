@@ -107,11 +107,11 @@ class _Clip_searchState extends State<Clip_search>
   };
 
   List<Color> priorityC = [
-    Colors.red.shade600,
-    Colors.redAccent.shade200,
-    Colors.orange.shade300,
-    Colors.lightGreenAccent,
-    Colors.green.shade400
+    Color.fromARGB(255, 250, 204, 182),
+    Color.fromARGB(255, 170, 230, 224),
+    Color.fromARGB(255, 246, 213, 164),
+    Color.fromARGB(236, 201, 246, 149),
+    Color.fromARGB(255, 162, 241, 166)
   ];
 
   TextEditingController saved_date = TextEditingController();
@@ -170,7 +170,7 @@ class _Clip_searchState extends State<Clip_search>
                     border: InputBorder.none,
                   ),
                   style: TextStyle(
-                    fontSize: _screenH / 25,
+                    fontSize: _screenH / 27,
                     fontFamily: "co",
                     color: Colors.black,
                   ),
@@ -188,7 +188,7 @@ class _Clip_searchState extends State<Clip_search>
                                   index < Search_list.length;
                                   index++)
                                 individual_box(
-                                  fontsize: _screenH / 27,
+                                  fontsize: _screenH / 34,
                                   anIconWid: _screenWidth / 12,
                                   anima: Search_list[index][1]
                                           .toString()
@@ -231,7 +231,7 @@ class _Clip_searchState extends State<Clip_search>
                                                       fontSize: _screenH / 18,
                                                       decoration: TextDecoration
                                                           .underline,
-                                                      fontFamily: "s4"),
+                                                      fontFamily: "cd"),
                                                 ),
                                                 const SizedBox(
                                                   height: 30,
@@ -293,7 +293,7 @@ class _Clip_searchState extends State<Clip_search>
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
-                                                          fontFamily: "s3",
+                                                          fontFamily: "cd",
                                                           fontSize:
                                                               _screenH / 20),
                                                     ),
@@ -437,7 +437,7 @@ class _Clip_searchState extends State<Clip_search>
                         decoration: InputDecoration(
                             hintText: "How long do you want to save for?"),
                         style: TextStyle(
-                            fontFamily: "s4",
+                            fontFamily: "co",
                             fontWeight: FontWeight.bold,
                             fontSize: _screenH / 27),
                       ),
@@ -556,13 +556,13 @@ class _Clip_searchState extends State<Clip_search>
                               style: TextStyle(
                                   fontFamily: "co",
                                   fontWeight: FontWeight.bold,
-                                  fontSize: _screenH / 33),
+                                  fontSize: _screenH / 42),
                             ),
                             subtitle: Text(meetingTile[i][4],
                                 style: TextStyle(
                                     fontFamily: "co",
                                     fontWeight: FontWeight.bold,
-                                    fontSize: _screenH / 40)),
+                                    fontSize: _screenH / 52)),
                             leading: Container(
                               width: _screenWidth / 24,
                               child: Lottie.asset(
@@ -590,8 +590,8 @@ class _Clip_searchState extends State<Clip_search>
                       child: GridView.count(
                         crossAxisCount: 5,
                         childAspectRatio: 2.5,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 40,
+                        crossAxisSpacing: 40,
                         children: [
                           for (var pops = 0; pops < 5; pops++) hashTag(pops)
                         ],
@@ -617,8 +617,8 @@ class _Clip_searchState extends State<Clip_search>
                       child: GridView.count(
                         crossAxisCount: 5,
                         childAspectRatio: 2.5,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 40,
+                        crossAxisSpacing: 40,
                         children: [
                           for (var pops = 0;
                               pops <
